@@ -1,0 +1,27 @@
+---
+layout: default
+title: Keranjang
+permalink: /keranjang/
+noindex: true
+sitemap: false
+scripts: [keranjang]
+---
+<h1 class="mb-3 text-xl font-extrabold">Keranjang</h1>
+<div id="keranjang-kosong" class="kartu hidden p-8 text-center">
+  <p class="text-4xl" aria-hidden="true">🛒</p>
+  <p class="mt-2 font-bold">Keranjang masih kosong</p>
+  <a href="{{ '/produk/' | relative_url }}" class="btn-brand mt-4">Jelajahi produk</a>
+</div>
+<div id="keranjang-isi" class="grid gap-4 md:grid-cols-[1fr_320px]">
+  <ul id="keranjang-daftar" class="grid gap-3"></ul>
+  <aside class="kartu h-fit p-4 md:sticky md:top-20" aria-label="Ringkasan pesanan">
+    <h2 class="mb-2 font-extrabold">Ringkasan</h2>
+    <div class="flex justify-between text-sm"><span class="text-slate-500">Jumlah produk</span><span id="ringkas-jumlah" class="font-bold">0</span></div>
+    <div class="mt-1 flex justify-between"><span class="text-slate-500">Total</span><span id="ringkas-total" class="text-lg font-extrabold">Rp 0</span></div>
+    <label for="catatan" class="label mt-3">Catatan (opsional)</label>
+    <input id="catatan" class="input" maxlength="200" placeholder="Mis. nama instansi untuk lisensi">
+    <button id="btn-checkout" type="button" class="btn-brand mt-3 w-full">Buat pesanan</button>
+    <p class="mt-2 text-xs text-slate-500">Harga final dihitung server. Tautan unduhan dirilis setelah pembayaran terverifikasi admin.</p>
+  </aside>
+</div>
+<section id="hasil-pesanan" class="kartu mt-4 hidden p-5" aria-live="polite"></section>

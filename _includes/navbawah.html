@@ -1,0 +1,10 @@
+<nav class="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white pb-[env(safe-area-inset-bottom)] md:hidden" aria-label="Navigasi bawah">
+  <ul class="mx-auto grid max-w-md grid-cols-5 text-[11px] font-semibold text-slate-500">
+    {%- assign u = page.url -%}
+    <li><a href="{{ '/' | relative_url }}" class="flex flex-col items-center gap-0.5 py-2 {% if u == '/' %}text-brand-deeper{% endif %}"><span class="ikon" aria-hidden="true">home</span>Beranda</a></li>
+    <li><a href="{{ '/promo/' | relative_url }}" class="flex flex-col items-center gap-0.5 py-2 {% if u == '/promo/' %}text-brand-deeper{% endif %}"><span class="ikon" aria-hidden="true">sell</span>Promo</a></li>
+    <li><a href="{{ '/keranjang/' | relative_url }}" class="flex flex-col items-center gap-0.5 py-2 {% if u == '/keranjang/' %}text-brand-deeper{% endif %}"><span class="ikon" aria-hidden="true">shopping_cart</span>Keranjang</a></li>
+    <li><a href="{{ '/pesanan/' | relative_url }}" class="flex flex-col items-center gap-0.5 py-2 {% if u == '/pesanan/' %}text-brand-deeper{% endif %}"><span class="ikon" aria-hidden="true">receipt_long</span>Pesanan</a></li>
+    <li><a href="{{ '/akun/' | relative_url }}" class="flex flex-col items-center gap-0.5 py-2 {% if u == '/akun/' %}text-brand-deeper{% endif %}"><span class="ikon" aria-hidden="true">person</span>Akun</a></li>
+  </ul>
+</nav>

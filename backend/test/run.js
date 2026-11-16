@@ -1,0 +1,178 @@
+'use strict';
+/** Uji backend Code.gs end-to-end. Jalankan:  node backend/test/run.js */
+const { ctx, call, sheets, files, logs, props, advance } = require('./harness');
+let pass = 0, failed = 0;
+function ok(cond, nama, detail) { if (cond) { pass++; console.log('  ✓', nama); } else { failed++; console.log('  ✗', nama, detail !== undefined ? '→ ' + JSON.stringify(detail) : ''); } }
+const png = Buffer.concat([Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]), Buffer.alloc(64, 1)]).toString('base64');
+const exeLike = Buffer.from('MZ-bukan-gambar').toString('base64');
+const section = (t) => console.log('\n' + t);
+
+// ============================================================
+section('1. Setup awal');
+ctx.setupAwal();
+const m = logs.join('\n').match(/Username: (\S+) \| Sandi: (\S+)/);
+ok(!!m, 'setupAwal membuat superadmin dengan sandi acak (tidak ada sandi bawaan)');
+const SU = m[1], SUPW = m[2];
+ok(['Users', 'Products', 'Orders', 'Messages', 'Log'].every((n) => sheets[n]), 'lima sheet dibuat otomatis');
+ok(!!props.TOKEN_SECRET && !!props.PEPPER, 'rahasia token dan pepper dibuat acak di Script Properties');
+ok(!JSON.stringify(sheets.Users.data).includes(SUPW), 'sandi tidak tersimpan polos di sheet');
+
+section('2. Login, sesi, dan pembatasan');
+let r = call('login', { username: SU, password: 'salah' });
+ok(r.success === false && /salah/.test(r.message), 'sandi salah ditolak', r);
+r = call('login', { username: 'tidakada', password: 'x' });
+ok(r.message === 'Username atau kata sandi salah.', 'pesan sama untuk akun tak ada (tidak membocorkan akun)');
+r = call('login', { username: SU, password: SUPW });
+ok(r.success && r.token && r.user.role === 'superadmin', 'login superadmin berhasil');
+const ADMIN = r.token;
+for (let i = 0; i < 5; i++) call('login', { username: 'korban', password: 'salah' + i });
+r = call('login', { username: 'korban', password: 'salah' });
+ok(/Terlalu banyak/.test(r.message), 'akun dikunci setelah 5 kali gagal', r);
+ok(call('getProducts', { token: ADMIN + 'x' }).success === false, 'token yang dimodifikasi ditolak');
+ok(call('getProducts', { token: '' }).success === false, 'tanpa token ditolak');
+ok(/POST/.test(call('getProducts', { token: ADMIN }, 'GET').message), 'aksi bertoken tidak bisa lewat GET');
+
+section('3. CRUD produk oleh superadmin (logika Todipener)');
+r = call('addProduct', { token: ADMIN, product: { nama: 'POS Kasir', deskripsi: 'Kode sumber POS', harga: 249000, hargaCoret: 450000, stok: 2, kategori: 'Source Code', linkDownload: 'https://drive.google.com/rahasia-pos', status: 'aktif' } });
+ok(r.success && /^PRD-/.test(r.id), 'tambah produk berbayar', r);
+const P1 = r.id;
+r = call('addProduct', { token: ADMIN, product: { nama: 'Boilerplate Gratis', deskripsi: 'Gratis', harga: 0, stok: 5, kategori: 'Freebies', linkDownload: 'https://drive.google.com/gratis', status: 'aktif' } });
+const P2 = r.id;
+r = call('addProduct', { token: ADMIN, product: { nama: 'Draf Nonaktif', deskripsi: 'x', harga: 1000, stok: 1, kategori: 'API', status: 'nonaktif' } });
+const P3 = r.id;
+ok(call('addProduct', { token: ADMIN, product: { nama: 'X', deskripsi: 'x', harga: -5, stok: 1, kategori: 'k' } }).success === false, 'harga negatif ditolak');
+ok(call('addProduct', { token: ADMIN, product: { nama: 'X', deskripsi: 'x', harga: 5, stok: 1.5, kategori: 'k' } }).success === false, 'stok pecahan ditolak');
+ok(call('addProduct', { token: ADMIN, product: { nama: 'X', deskripsi: 'x', harga: 5, stok: 1, kategori: 'k', linkDownload: 'javascript:alert(1)' } }).success === false, 'tautan unduhan non-https ditolak');
+ok(call('addProduct', { token: ADMIN, product: { nama: '=HYPERLINK("http://jahat")', deskripsi: 'x', harga: 5, stok: 1, kategori: 'k' } }).success === true && !JSON.stringify(sheets.Products.data).includes('FORMULA:'), 'rumus di nama produk dinetralkan');
+r = call('getProducts', { token: ADMIN, limit: 2 });
+ok(r.products.length === 2 && r.total >= 4 && r.hasOwnProperty('totalAktif') && r.kategoriList.length > 0, 'daftar produk admin: paginasi dan statistik', { total: r.total });
+r = call('getProducts', { token: ADMIN, q: 'pos' });
+ok(r.products.length === 1 && r.products[0].linkDownload === 'https://drive.google.com/rahasia-pos', 'pencarian; admin melihat tautan unduhan');
+ok(call('updateProduct', { token: ADMIN, product: { id: P1, nama: 'POS Kasir v2', deskripsi: 'Kode sumber POS', harga: 249000, hargaCoret: 450000, stok: 2, kategori: 'Source Code', linkDownload: 'https://drive.google.com/rahasia-pos', status: 'aktif' } }).success, 'ubah produk');
+ok(call('getProduct', { token: ADMIN, id: P1 }).product.nama === 'POS Kasir v2', 'perubahan tersimpan');
+r = call('uploadImage', { token: ADMIN, filename: 'cover.png', base64: png });
+ok(r.success && /thumbnail\?id=FILE\d+/.test(r.thumbnailUrl) && files[0].shared[0] === 'ANYONE_WITH_LINK', 'unggah gambar valid ke Drive dan dibuka untuk umum', r);
+ok(call('uploadImage', { token: ADMIN, filename: 'x.png', base64: exeLike }).success === false, 'berkas palsu berekstensi gambar ditolak (cek tanda tangan berkas)');
+ok(call('uploadImage', { token: ADMIN, filename: 'besar.png', base64: Buffer.concat([Buffer.from([0x89, 0x50, 0x4E, 0x47]), Buffer.alloc(5 * 1024 * 1024 + 10)]).toString('base64') }).success === false, 'gambar di atas 5 MB ditolak');
+
+section('4. Katalog publik tidak membocorkan tautan unduhan');
+r = call('getPublicProducts', {}, 'GET');
+ok(r.success && r.products.every((p) => p.status === undefined && !('linkDownload' in p)), 'respons publik tanpa linkDownload');
+ok(!JSON.stringify(r).includes('rahasia-pos'), 'tautan unduhan tidak muncul di JSON publik');
+ok(!r.products.some((p) => p.id === P3), 'produk nonaktif tidak tampil');
+ok(call('getPublicProduct', { id: P3 }, 'GET').success === false, 'detail produk nonaktif tidak bisa dibuka');
+ok(call('getPublicProduct', { id: P1 }, 'GET').success, 'detail produk aktif bisa dibuka');
+
+section('5. Akun pembeli');
+ok(call('register', { username: 'sari', nama: 'Sari', password: 'rahasia123', telepon: '0812345678' }).success, 'daftar pembeli');
+ok(call('register', { username: 'sari', nama: 'Sari 2', password: 'rahasia123' }).success === false, 'username ganda ditolak');
+ok(call('register', { username: 'ab', nama: 'X', password: 'rahasia123' }).success === false, 'username terlalu pendek ditolak');
+ok(call('register', { username: 'budi', nama: 'Budi', password: 'pendek' }).success === false, 'sandi pendek ditolak');
+ok(call('register', { username: '0012', nama: 'Angka Nol', password: 'rahasia123' }).success, 'username numerik "0012" bisa didaftarkan');
+r = call('login', { username: '0012', password: 'rahasia123' });
+ok(r.success && r.user.username === '0012', 'username numerik tetap "0012" (nol di depan tidak hilang)', r);
+const NUMTOK = r.token;
+r = call('login', { username: 'sari', password: 'rahasia123' });
+const BUYER = r.token;
+ok(r.success && r.user.role === 'pembeli', 'login pembeli');
+ok(call('me', { token: BUYER }).user.telepon === '0812345678', 'nomor telepon berawalan 0 tidak berubah jadi angka');
+ok(call('addProduct', { token: BUYER, product: {} }).message === 'Akses ditolak.', 'pembeli tidak bisa CRUD produk');
+ok(call('getUsers', { token: BUYER }).success === false, 'pembeli tidak bisa melihat daftar pengguna');
+ok(JSON.stringify(call('getUsers', { token: ADMIN })).includes('hash') === false, 'daftar pengguna admin tidak memuat hash/salt');
+
+section('6. Pesanan dan pelepasan unduhan');
+r = call('createOrder', { token: BUYER, items: [{ id: P1, harga: 1 }, { id: P2 }] });
+ok(r.success && r.order.total === 249000 && r.order.status === 'menunggu', 'total dihitung server (harga dari klien diabaikan)', r.order);
+ok(!r.order.downloads, 'belum lunas: tidak ada tautan unduhan');
+const ORD1 = r.order.id;
+ok(call('createOrder', { token: BUYER, items: [{ id: P3 }] }).success === false, 'produk nonaktif tidak bisa dipesan');
+ok(call('createOrder', { token: BUYER, items: [] }).success === false, 'keranjang kosong ditolak');
+r = call('createOrder', { token: BUYER, items: [{ id: P2 }] });
+ok(r.success && r.order.status === 'lunas' && r.order.downloads[0].link === 'https://drive.google.com/gratis', 'pesanan gratis langsung lunas dan tautan terbuka');
+ok(call('getProduct', { token: ADMIN, id: P2 }).product.stok === 4, 'stok produk gratis berkurang saat lunas');
+ok(call('getProduct', { token: ADMIN, id: P1 }).product.stok === 2, 'stok produk berbayar belum berubah sebelum lunas');
+r = call('getMyOrders', { token: BUYER });
+const o1 = r.orders.find((o) => o.id === ORD1);
+ok(r.orders.length === 2 && !o1.downloads, 'riwayat pesanan pembeli; unduhan belum tersedia untuk yang menunggu');
+ok(call('getMyOrders', { token: NUMTOK }).orders.length === 0, 'pembeli lain tidak melihat pesanan orang lain');
+ok(call('updateOrderStatus', { token: BUYER, id: ORD1, status: 'lunas' }).success === false, 'pembeli tidak bisa melunasi pesanannya sendiri');
+ok(call('updateOrderStatus', { token: ADMIN, id: ORD1, status: 'lunas' }).success, 'admin melunasi pesanan');
+ok(call('getProduct', { token: ADMIN, id: P1 }).product.stok === 1, 'stok berkurang setelah lunas');
+r = call('getMyOrders', { token: BUYER });
+ok(r.orders.find((o) => o.id === ORD1).downloads[0].link === 'https://drive.google.com/rahasia-pos', 'setelah lunas pembeli mendapat tautan unduhan');
+ok(/pernah terjual/.test(call('deleteProduct', { token: ADMIN, id: P1 }).message), 'produk yang sudah terjual tidak bisa dihapus');
+ok(call('updateOrderStatus', { token: ADMIN, id: ORD1, status: 'dibatalkan' }).success, 'admin membatalkan pesanan lunas');
+ok(call('getProduct', { token: ADMIN, id: P1 }).product.stok === 2, 'stok dikembalikan saat batal');
+ok(!call('getMyOrders', { token: BUYER }).orders.find((o) => o.id === ORD1).downloads, 'setelah batal tautan unduhan ditutup lagi');
+ok(call('deleteProduct', { token: ADMIN, id: P3 }).success, 'produk yang belum pernah terjual bisa dihapus');
+r = call('getStats', { token: ADMIN });
+ok(r.success && r.pesanan.total === 2 && r.pesanan.lunas === 1, 'statistik dashboard', r.pesanan);
+
+section('7. Chat (logika Pesaner)');
+ok(call('register', { username: 'dewi', nama: 'Dewi', password: 'rahasia123' }).success, 'daftar pembeli kedua');
+const DEWI = call('login', { username: 'dewi', password: 'rahasia123' }).token;
+r = call('sendMessage', { token: BUYER, toUsername: 'dewi', content: 'halo' });
+ok(r.success === false, 'pembeli tidak bisa mengirim pesan ke pembeli lain (anti-spam)', r);
+r = call('sendMessage', { token: BUYER, toUsername: SU, content: '=cmd|calc' });
+ok(r.success && !JSON.stringify(sheets.Messages.data).includes('FORMULA:'), 'pesan beraroma rumus disimpan sebagai teks');
+ok(call('sendMessage', { token: BUYER, toUsername: SU, content: '   ' }).success === false, 'pesan kosong ditolak');
+ok(call('sendMessage', { token: BUYER, toUsername: 'tidakada', content: 'x' }).success === false, 'penerima tidak ada ditolak');
+ok(call('sendMessage', { token: BUYER, toUsername: SU, type: 'image', fileUrl: 'javascript:alert(1)' }).success === false, 'tautan berkas bukan dari Drive ditolak');
+ok(call('sendMessage', { token: BUYER, toUsername: SU, type: 'image', fileUrl: 'https://evil.example/x.png' }).success === false, 'domain luar ditolak');
+r = call('uploadChatFile', { token: BUYER, fileName: 'bukti.png', mimeType: 'image/png', base64Data: png });
+ok(r.success && /thumbnail/.test(r.directUrl), 'unggah foto bukti pembayaran', r);
+ok(call('sendMessage', { token: BUYER, toUsername: SU, type: 'image', fileUrl: r.directUrl, fileName: 'bukti.png', mimeType: 'image/png' }).success, 'kirim pesan gambar dengan tautan hasil unggah');
+ok(call('uploadChatFile', { token: BUYER, fileName: 'virus.exe', mimeType: 'application/octet-stream', base64Data: png }).success === false, 'ekstensi .exe ditolak');
+ok(call('uploadChatFile', { token: BUYER, fileName: 'a.png', mimeType: 'image/png', base64Data: exeLike }).success === false, 'gambar palsu ditolak');
+ok(call('uploadChatFile', { token: BUYER, fileName: 'a.html', mimeType: 'text/html', base64Data: Buffer.from('<script>').toString('base64') }).success === false, 'html ditolak');
+r = call('getConversations', { token: ADMIN });
+ok(r.conversations.length === 1 && r.conversations[0].username === 'sari' && r.conversations[0].unread === 2 && r.conversations[0].lastMessage.includes('Foto'), 'admin melihat percakapan, 2 belum dibaca, pratinjau pesan gambar', r.conversations);
+ok(call('getUnreadCount', { token: ADMIN }).unread === 2, 'lencana pesan belum dibaca');
+r = call('getConversation', { token: ADMIN, otherUsername: 'sari' });
+ok(r.messages.length === 2 && r.messages[0].read === false && r.messages[0].fromName === 'Sari', 'admin membuka percakapan; belum terbaca');
+ok(call('markConversationRead', { token: ADMIN, otherUsername: 'sari' }).marked === 2, 'tandai terbaca');
+r = call('getConversation', { token: BUYER, otherUsername: SU });
+ok(r.messages.every((x) => x.read === true), 'pembeli melihat centang dua (✓✓) setelah dibaca');
+ok(call('getUnreadCount', { token: ADMIN }).unread === 0, 'lencana kembali 0');
+advance(120000); // lewati jendela batas laju
+for (let i = 0; i < 18; i++) { call('sendMessage', { token: ADMIN, toUsername: 'sari', content: 'admin ' + i }); call('sendMessage', { token: BUYER, toUsername: SU, content: 'sari ' + i }); }
+r = call('getConversation', { token: BUYER, otherUsername: SU, offset: 0, limit: 30 });
+ok(r.messages.length === 30 && r.hasMore === true && r.total === 38, 'halaman pertama 30 pesan terbaru, masih ada yang lama', { n: r.messages.length, total: r.total });
+ok(r.messages.every((x, i, a) => i === 0 || a[i - 1].createdAt <= x.createdAt), 'pesan terurut dari lama ke baru');
+r = call('getConversation', { token: BUYER, otherUsername: SU, offset: 30, limit: 30 });
+ok(r.messages.length === 8 && r.hasMore === false, 'halaman kedua memuat sisa 8 pesan lama', { n: r.messages.length });
+advance(120000);
+let blokir = null; for (let i = 0; i < 40; i++) { const x = call('sendMessage', { token: BUYER, toUsername: SU, content: 'spam ' + i }); if (!x.success) { blokir = x; break; } }
+ok(blokir && /cepat/.test(blokir.message), 'pembatas laju: lebih dari 30 pesan per menit ditolak');
+ok(call('getConversation', { token: ADMIN, otherUsername: 'dewi' }).messages.length === 0, 'percakapan admin dengan pengguna lain terpisah');
+ok(call('getConversation', { token: DEWI, otherUsername: 'sari' }).messages.length === 0, 'pembeli lain tidak bisa membaca percakapan orang (kunci dari token, bukan parameter)');
+r = call('getSupportContacts', { token: BUYER });
+ok(r.contacts.some((c) => c.username === SU), 'kontak dukungan tersedia bagi pembeli');
+ok(call('searchUsers', { token: BUYER, q: 'dew' }).success === false, 'pembeli tidak bisa mencari pengguna');
+ok(call('searchUsers', { token: ADMIN, q: 'de' }).success === false, 'pencarian minimal 3 huruf');
+ok(call('searchUsers', { token: ADMIN, q: 'dew' }).users[0].username === 'dewi', 'admin mencari pengguna untuk memulai chat');
+
+section('8. Manajemen pengguna, sandi, dan sesi');
+r = call('updateUser', { token: ADMIN, username: 'dewi', status: 'nonaktif' });
+ok(r.success, 'admin menonaktifkan akun');
+ok(call('me', { token: DEWI }).success === false, 'token akun nonaktif langsung tidak berlaku');
+ok(call('login', { username: 'dewi', password: 'rahasia123' }).success === false, 'akun nonaktif tidak bisa masuk');
+call('updateUser', { token: ADMIN, username: 'dewi', status: 'aktif' });
+ok(call('resetUserPassword', { token: ADMIN, username: 'dewi', newPassword: 'sandibaru999' }).success, 'admin reset sandi pengguna');
+ok(call('login', { username: 'dewi', password: 'sandibaru999' }).success, 'sandi baru berlaku');
+ok(call('updateUser', { token: ADMIN, username: SU, status: 'nonaktif' }).success === false, 'admin tidak bisa menonaktifkan dirinya sendiri');
+ok(call('changePassword', { token: BUYER, oldPassword: 'salah', newPassword: 'barubaru123' }).success === false, 'ganti sandi butuh sandi lama');
+ok(call('changePassword', { token: BUYER, oldPassword: 'rahasia123', newPassword: 'barubaru123' }).success, 'ganti sandi');
+ok(call('me', { token: BUYER }).success === false, 'token lama tidak berlaku setelah ganti sandi');
+const B2 = call('login', { username: 'sari', password: 'barubaru123' }).token;
+ok(call('logout', { token: B2 }).success && call('me', { token: B2 }).success === false, 'logout mencabut sesi');
+const B3 = call('login', { username: 'sari', password: 'barubaru123' }).token;
+advance(13 * 3600 * 1000);
+ok(/berakhir/.test(call('me', { token: B3 }).message), 'token kedaluwarsa setelah 12 jam');
+
+section('9. Audit log');
+const aksi = sheets.Log.data.slice(1).map((x) => x[2]);
+ok(['tambah_produk', 'ubah_produk', 'hapus_produk', 'unggah_gambar', 'status_pesanan', 'ubah_pengguna', 'reset_sandi'].every((a) => aksi.includes(a)), 'aksi superadmin tercatat di sheet Log', [...new Set(aksi)]);
+
+console.log(`\nHASIL: ${pass} lulus, ${failed} gagal`);
+process.exit(failed ? 1 : 0);

@@ -1,0 +1,27 @@
+<header class="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
+  <div class="mx-auto flex max-w-5xl items-center gap-2 px-3 py-2.5 sm:gap-4 sm:px-4">
+    <a href="{{ '/' | relative_url }}" class="flex shrink-0 items-center gap-2" aria-label="ANDU.my.id, ke beranda">
+      <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-lg font-extrabold text-slate-900">A</span>
+      <span class="hidden text-base font-extrabold sm:inline">ANDU<span class="text-brand-deeper">.my.id</span></span>
+    </a>
+    <form action="{{ '/produk/' | relative_url }}" method="get" role="search" class="relative min-w-0 flex-1">
+      <label for="cari-global" class="sr-only">Cari produk</label>
+      <span class="ikon pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true">search</span>
+      <input id="cari-global" name="q" type="search" placeholder="Cari source code, SaaS, UI kit…" class="input !rounded-full !bg-slate-100 !pl-10" autocomplete="off">
+    </form>
+    <nav class="hidden items-center gap-1 md:flex" aria-label="Menu utama">
+      <a class="btn-ghost !border-0 !px-3" href="{{ '/produk/' | relative_url }}">Produk</a>
+      <a class="btn-ghost !border-0 !px-3" href="{{ '/promo/' | relative_url }}">Promo</a>
+      <a class="btn-ghost !border-0 !px-3" href="{{ site.blog_url }}">Blog</a>
+    </nav>
+    <a href="{{ '/pesan/' | relative_url }}" id="tombol-chat" class="relative hidden h-10 w-10 items-center justify-center rounded-full hover:bg-slate-100" aria-label="Pesan">
+      <span class="ikon" aria-hidden="true">chat</span><span id="lencana-chat" class="lencana hidden">0</span>
+    </a>
+    <a href="{{ '/keranjang/' | relative_url }}" class="relative flex h-10 w-10 items-center justify-center rounded-full hover:bg-slate-100" aria-label="Keranjang">
+      <span class="ikon" aria-hidden="true">shopping_cart</span><span id="lencana-keranjang" class="lencana hidden">0</span>
+    </a>
+    <a href="{{ '/akun/' | relative_url }}" id="tombol-akun" class="hidden h-10 w-10 items-center justify-center rounded-full hover:bg-slate-100 md:flex" aria-label="Akun">
+      <span class="ikon" aria-hidden="true">person</span>
+    </a>
+  </div>
+</header>

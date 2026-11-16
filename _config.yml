@@ -1,0 +1,33 @@
+# ====== PENGATURAN UTAMA (ubah bagian ini) ======
+title: ANDU.my.id
+tagline: Marketplace produk digital Indonesia
+description: Source code, SaaS, kursus, UI kit, dan API siap pakai dari kreator Indonesia. Lisensi jelas, tautan unduhan dirilis setelah pembayaran terverifikasi.
+lang: id
+locale: id_ID
+publisher: El-Salam Technology
+
+# Alamat situs. Contoh: repo "market" di akun anduid dengan domain andu.my.id
+#   -> https://andu.my.id/market/   : url: https://andu.my.id   baseurl: /market
+# Jika marketplace dipasang di akar domain, kosongkan baseurl: ""
+url: "https://andu.my.id"
+baseurl: "/market"
+
+# URL web app Apps Script (hasil Deploy > Web app, berakhiran /exec)
+api_url: "https://script.google.com/macros/s/AKfycbx2-5gdwYqd_34LXEw-xAuqcA4sxA8fOObjc3Z2qtFym2jTWPmC6Pq0ucAJ0dCwymoJ/exec"
+support_username: andu            # akun superadmin yang menerima chat dukungan
+blog_url: "https://andu.my.id/blog/"
+studio_url: "https://andu.my.id/"
+kontak_email: "elsalamtechnology@gmail.com"
+default_image: /assets/images/og-default.png
+
+# ====== TEKNIS ======
+timezone: Asia/Jakarta
+future: true
+markdown: kramdown
+collections:
+  produk:
+    output: true
+    permalink: /produk/:name/
+plugins:
+  - jekyll-sitemap
+exclude: [README.md, Gemfile, Gemfile.lock, scripts, backend, src, node_modules, vendor, package.json, package-lock.json, tailwind.config.js]

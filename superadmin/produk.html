@@ -1,0 +1,66 @@
+---
+layout: admin
+title: Form Produk
+permalink: /superadmin/produk/
+noindex: true
+sitemap: false
+guard: true
+scripts: [admin-produk]
+---
+<div class="mb-4 flex items-center justify-between gap-2">
+  <div class="flex items-center gap-2">
+    <a href="{{ '/superadmin/dashboard/' | relative_url }}" class="btn-ghost !px-2.5" aria-label="Kembali ke dashboard"><span class="ikon" aria-hidden="true">arrow_back</span></a>
+    <h1 id="judul-form" class="text-xl font-extrabold">Tambah produk</h1>
+  </div>
+  <button id="btn-hapus" type="button" class="btn-ghost hidden text-red-600"><span class="ikon" aria-hidden="true">delete</span> Hapus</button>
+</div>
+
+<form id="form-produk" class="grid gap-4 lg:grid-cols-[1fr_320px]" novalidate>
+  <div class="kartu grid gap-4 p-5">
+    <div><label class="label" for="p-nama">Nama produk *</label><input id="p-nama" class="input" maxlength="120" required></div>
+    <div>
+      <label class="label" for="p-deskripsi">Deskripsi * <span id="hitung-desk" class="float-right font-semibold normal-case text-slate-400">0/2000</span></label>
+      <textarea id="p-deskripsi" class="input min-h-[140px]" maxlength="2000" required></textarea>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-3">
+      <div><label class="label" for="p-harga">Harga (Rp) *</label><input id="p-harga" type="number" min="0" step="1" class="input" inputmode="numeric" required></div>
+      <div><label class="label" for="p-coret">Harga coret (Rp)</label><input id="p-coret" type="number" min="0" step="1" class="input" inputmode="numeric" placeholder="opsional"></div>
+      <div><label class="label" for="p-stok">Stok lisensi *</label><input id="p-stok" type="number" min="0" step="1" class="input" inputmode="numeric" required></div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div>
+        <label class="label" for="p-kategori">Kategori *</label>
+        <select id="p-kategori" class="input">{% for k in site.data.kategori %}<option>{{ k.nama | escape }}</option>{% endfor %}<option value="__lain__">Lainnya…</option></select>
+        <input id="p-kategori-lain" class="input mt-2 hidden" maxlength="40" placeholder="Nama kategori baru">
+      </div>
+      <div><label class="label" for="p-penjual">Username penjual</label><input id="p-penjual" class="input" maxlength="20" placeholder="{{ site.support_username }}"></div>
+    </div>
+    <div>
+      <label class="label" for="p-link">Tautan unduhan (privat) </label>
+      <input id="p-link" class="input" maxlength="500" placeholder="https://drive.google.com/…">
+      <p class="mt-1 text-xs text-slate-500">Hanya dikirim ke pembeli setelah pesanan lunas. Tidak pernah tampil di katalog publik.</p>
+    </div>
+  </div>
+
+  <div class="grid h-fit gap-4">
+    <div class="kartu p-5">
+      <p class="label">Gambar produk</p>
+      <label id="drop" for="p-gambar" class="flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-slate-300 bg-slate-50 p-4 text-center text-sm text-slate-500 hover:border-brand">
+        <img id="preview" alt="Pratinjau gambar produk" class="mb-2 hidden max-h-44 rounded-lg">
+        <span class="ikon text-3xl" aria-hidden="true">add_photo_alternate</span>
+        <span><strong>Pilih</strong> atau seret gambar ke sini</span>
+        <span class="text-xs">JPEG, PNG, GIF, WebP · maks. 5 MB</span>
+      </label>
+      <input id="p-gambar" type="file" accept="image/jpeg,image/png,image/gif,image/webp" class="sr-only">
+    </div>
+    <fieldset class="kartu p-5">
+      <legend class="label px-1">Status</legend>
+      <div class="flex gap-4 text-sm font-semibold">
+        <label class="flex items-center gap-2"><input type="radio" name="p-status" value="aktif" checked> Aktif</label>
+        <label class="flex items-center gap-2"><input type="radio" name="p-status" value="nonaktif"> Nonaktif</label>
+      </div>
+    </fieldset>
+    <button id="btn-simpan" type="submit" class="btn-brand w-full">Simpan produk</button>
+    <p id="form-pesan" class="text-sm font-semibold text-red-600" role="alert"></p>
+  </div>
+</form>

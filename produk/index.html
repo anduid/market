@@ -1,0 +1,30 @@
+---
+layout: default
+title: Semua Produk
+description: Jelajahi source code, SaaS, kursus, UI kit, dan API siap pakai dari kreator Indonesia. Filter berdasarkan kategori, harga, dan diskon.
+permalink: /produk/
+scripts: [katalog]
+---
+<h1 class="mb-3 text-xl font-extrabold">Semua produk</h1>
+<div class="kartu mb-4 grid gap-3 p-3 sm:grid-cols-4">
+  <div class="sm:col-span-2">
+    <label for="kat-q" class="label">Cari</label>
+    <input id="kat-q" type="search" class="input" placeholder="Nama produk…" autocomplete="off">
+  </div>
+  <div>
+    <label for="kat-kategori" class="label">Kategori</label>
+    <select id="kat-kategori" class="input"><option value="">Semua kategori</option></select>
+  </div>
+  <div>
+    <label for="kat-urut" class="label">Urutkan</label>
+    <select id="kat-urut" class="input">
+      <option value="baru">Terbaru</option><option value="murah">Harga terendah</option>
+      <option value="mahal">Harga tertinggi</option><option value="diskon">Diskon terbesar</option>
+    </select>
+  </div>
+</div>
+<p id="kat-info" class="mb-2 text-sm text-slate-500" aria-live="polite"></p>
+<div id="kat-grid" class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+  {%- for p in site.data.produk %}{% include kartu-produk.html p=p %}{% endfor %}
+</div>
+<p id="kat-kosong" class="kartu hidden p-8 text-center text-slate-500">Tidak ada produk yang cocok. Coba kata kunci lain.</p>

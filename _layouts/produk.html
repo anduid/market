@@ -1,0 +1,45 @@
+---
+layout: default
+scripts: [halaman-produk]
+---
+{%- assign kat = site.data.kategori | where: "nama", page.kategori | first -%}
+<nav class="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-slate-500" aria-label="Posisi halaman">
+  <a href="{{ '/' | relative_url }}" class="hover:text-brand-deeper">Beranda</a><span aria-hidden="true">/</span>
+  <a href="{{ '/produk/' | relative_url }}" class="hover:text-brand-deeper">Produk</a><span aria-hidden="true">/</span>
+  <a href="{{ '/produk/' | relative_url }}?kategori={{ page.kategori | url_encode }}" class="hover:text-brand-deeper">{{ page.kategori | escape }}</a>
+</nav>
+<article class="kartu overflow-hidden" id="detail-produk" data-id="{{ page.id_produk }}">
+  <div class="grid md:grid-cols-2">
+    <div class="bg-slate-50">
+      {% include gambar.html id=page.gambar_id ukuran=800 alt=page.nama ikon=kat.ikon kelas="aspect-[4/3] w-full object-cover" muat="eager" %}
+    </div>
+    <div class="flex flex-col gap-3 p-5">
+      <span class="chip self-start">{{ page.kategori | escape }}</span>
+      <h1 class="text-xl font-extrabold leading-tight sm:text-2xl">{{ page.nama | escape }}</h1>
+      <div class="flex flex-wrap items-end gap-2">
+        <span id="harga-produk" class="text-2xl font-extrabold">{% include rupiah.html n=page.harga %}</span>
+        {%- if page.harga_coret > 0 -%}
+        <span id="harga-coret" class="text-sm text-slate-400 line-through">{% include rupiah.html n=page.harga_coret %}</span>
+        <span class="rounded-md bg-red-600 px-1.5 py-0.5 text-xs font-extrabold text-white">-{{ page.diskon }}%</span>
+        {%- endif -%}
+      </div>
+      <p id="stok-produk" class="text-sm font-semibold {% if page.stok < 1 %}text-red-600{% else %}text-brand-deeper{% endif %}">
+        {%- if page.stok < 1 -%}Stok habis{%- else -%}Tersedia {{ page.stok }} lisensi{%- endif -%}
+      </p>
+      <ul class="grid gap-1.5 text-sm text-slate-600">
+        <li class="flex items-center gap-2"><span class="ikon text-brand-deeper" aria-hidden="true">bolt</span> Tautan unduhan dirilis setelah pembayaran terverifikasi</li>
+        <li class="flex items-center gap-2"><span class="ikon text-brand-deeper" aria-hidden="true">verified_user</span> Dijual oleh {{ site.publisher }}</li>
+        <li class="flex items-center gap-2"><span class="ikon text-brand-deeper" aria-hidden="true">support_agent</span> Konsultasi teknis lewat chat</li>
+      </ul>
+      <div class="mt-2 grid gap-2 sm:grid-cols-2" id="aksi-produk">
+        <button type="button" class="btn-brand" data-beli="{{ page.id_produk }}" {% if page.stok < 1 %}disabled{% endif %}><span class="ikon" aria-hidden="true">bolt</span> {% if page.harga == 0 %}Ambil gratis{% else %}Beli sekarang{% endif %}</button>
+        <button type="button" class="btn-ghost" data-tambah="{{ page.id_produk }}" {% if page.stok < 1 %}disabled{% endif %}><span class="ikon" aria-hidden="true">add_shopping_cart</span> Keranjang</button>
+        <a class="btn-ghost sm:col-span-2" href="{{ '/pesan/' | relative_url }}?to={{ page.penjual | default: site.support_username | url_encode }}&amp;produk={{ page.id_produk | url_encode }}"><span class="ikon" aria-hidden="true">chat</span> Tanya penjual lewat chat</a>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-slate-100 p-5">
+    <h2 class="mb-2 text-lg font-extrabold">Deskripsi</h2>
+    <div class="text-[15px] leading-relaxed text-slate-700">{{ page.deskripsi | escape | newline_to_br }}</div>
+  </div>
+</article>

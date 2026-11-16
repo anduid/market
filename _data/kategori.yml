@@ -1,0 +1,7 @@
+# Dipakai di beranda, katalog, dan form admin. "ikon" memakai emoji agar tanpa berkas gambar.
+- { nama: "GovTech SaaS", ikon: "🏢" }
+- { nama: "Source Code", ikon: "💻" }
+- { nama: "VIP Academy", ikon: "🎓" }
+- { nama: "UI/UX Kits", ikon: "🎨" }
+- { nama: "API & Tokens", ikon: "🔑" }
+- { nama: "Freebies", ikon: "🎁" }

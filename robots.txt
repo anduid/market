@@ -1,0 +1,13 @@
+---
+layout: null
+permalink: /robots.txt
+---
+User-agent: *
+Allow: /
+Disallow: {{ '/superadmin/' | relative_url }}
+Disallow: {{ '/keranjang/' | relative_url }}
+Disallow: {{ '/pesanan/' | relative_url }}
+Disallow: {{ '/pesan/' | relative_url }}
+Disallow: {{ '/akun/' | relative_url }}
+
+Sitemap: {{ '/sitemap.xml' | absolute_url }}

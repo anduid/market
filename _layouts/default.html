@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang }}">
+<head>
+  {% include head.html %}
+</head>
+<body class="min-h-screen">
+  <a class="lompat" href="#isi">Lompat ke konten</a>
+  {% include header.html %}
+  <main id="isi" class="mx-auto w-full {% if page.lebar == 'penuh' %}max-w-6xl{% else %}max-w-5xl{% endif %} px-3 pb-24 pt-4 sm:px-4 md:pb-8">
+    {{ content }}
+  </main>
+  {% include footer.html %}
+  {% include navbawah.html %}
+  <div id="toast" class="pointer-events-none fixed inset-x-0 bottom-20 z-50 mx-auto hidden w-fit max-w-[90%] rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white shadow-lg md:bottom-6" role="status" aria-live="polite"></div>
+  <script src="{{ '/assets/js/core.js' | relative_url }}" defer></script>
+  {%- for s in page.scripts %}
+  <script src="{{ '/assets/js/' | append: s | append: '.js' | relative_url }}" defer></script>
+  {%- endfor %}
+</body>
+</html>

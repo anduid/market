@@ -1,0 +1,58 @@
+---
+layout: default
+title: Pesan
+permalink: /pesan/
+noindex: true
+sitemap: false
+lebar: penuh
+scripts: [chat]
+---
+<div id="chat-masuk" class="kartu hidden p-8 text-center">
+  <p class="text-4xl" aria-hidden="true">💬</p>
+  <h1 class="mt-2 text-lg font-extrabold">Masuk untuk memakai chat</h1>
+  <p class="mt-1 text-sm text-slate-500">Konsultasi produk dan kirim bukti pembayaran langsung ke penjual.</p>
+  <a id="chat-link-masuk" class="btn-brand mt-4" href="{{ '/akun/' | relative_url }}">Masuk atau daftar</a>
+</div>
+
+<div id="chat-app" class="kartu hidden overflow-hidden" style="height:calc(100dvh - 8.5rem);min-height:420px">
+  <div class="grid h-full md:grid-cols-[320px_1fr]">
+    <aside id="chat-panel-list" class="flex h-full min-h-0 flex-col border-slate-200 md:flex md:border-r" aria-label="Daftar percakapan">
+      <div class="flex items-center justify-between gap-2 border-b border-slate-100 p-3">
+        <h1 class="text-base font-extrabold">Pesan & Konsultasi</h1>
+        <button id="chat-notif" type="button" class="btn-ghost !px-2.5 !py-1.5 text-xs" title="Aktifkan notifikasi peramban"><span class="ikon" aria-hidden="true">notifications</span></button>
+      </div>
+      <div id="chat-search-wrap" class="hidden border-b border-slate-100 p-3">
+        <label for="chat-search" class="sr-only">Cari pengguna</label>
+        <input id="chat-search" class="input" placeholder="Cari pengguna (min. 3 huruf)…" autocomplete="off">
+        <ul id="chat-search-hasil" class="mt-2 grid gap-1"></ul>
+      </div>
+      <ul id="chat-list" class="min-h-0 flex-1 divide-y divide-slate-100 overflow-y-auto" aria-live="polite"></ul>
+    </aside>
+
+    <section id="chat-panel-thread" class="hidden h-full min-h-0 flex-col md:flex" aria-label="Percakapan">
+      <div class="flex items-center gap-3 border-b border-slate-100 p-3">
+        <button id="chat-kembali" type="button" class="btn-ghost !px-2 !py-1.5 md:hidden" aria-label="Kembali ke daftar"><span class="ikon" aria-hidden="true">arrow_back</span></button>
+        <span id="chat-avatar" class="flex h-10 w-10 items-center justify-center rounded-full bg-brand font-extrabold text-slate-900">A</span>
+        <div class="min-w-0"><p id="chat-nama" class="truncate font-extrabold">Pilih percakapan</p><p id="chat-peran" class="text-xs text-slate-500"></p></div>
+      </div>
+      <div id="chat-konteks" class="hidden items-center justify-between gap-2 border-b border-emerald-100 bg-emerald-50 px-3 py-2 text-xs"></div>
+      <div id="chat-pesan" class="min-h-0 flex-1 overflow-y-auto bg-slate-50 p-3" aria-live="polite">
+        <p id="chat-kosong" class="mt-10 text-center text-sm text-slate-400">Pilih percakapan di sebelah kiri atau mulai dari halaman produk.</p>
+      </div>
+      <div class="border-t border-slate-100 p-2">
+        <div id="chat-cepat" class="mb-2 hidden gap-1.5 overflow-x-auto pb-1" style="scrollbar-width:none">
+          {%- for b in site.data.chat.balasan_cepat %}
+          <button type="button" class="chip shrink-0 !bg-white !px-3 !py-1.5 ring-1 ring-slate-200 hover:ring-brand" data-balas="{{ b | escape }}">{{ b | escape }}</button>
+          {%- endfor %}
+        </div>
+        <form id="chat-form" class="flex items-end gap-2" autocomplete="off">
+          <label class="btn-ghost !px-2.5 cursor-pointer" for="chat-berkas" title="Lampirkan foto atau berkas (maks. 25 MB)"><span class="ikon" aria-hidden="true">attach_file</span><span class="sr-only">Lampirkan berkas</span></label>
+          <input id="chat-berkas" type="file" class="sr-only" accept="image/*,.pdf,.zip,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv">
+          <label for="chat-input" class="sr-only">Tulis pesan</label>
+          <textarea id="chat-input" rows="1" maxlength="2000" class="input max-h-32 min-h-[42px] flex-1 resize-none" placeholder="Ketik pesan… (Enter kirim, Shift+Enter baris baru)"></textarea>
+          <button id="chat-kirim" type="submit" class="btn-brand !px-3.5" aria-label="Kirim"><span class="ikon" aria-hidden="true">send</span></button>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-slate-100 text-slate-900 antialiased; }
+  :focus-visible { outline: 2px solid #2cb86c; outline-offset: 2px; }
+}
+@layer components {
+  .ikon { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; direction: ltr; -webkit-font-feature-settings: 'liga'; font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; font-size: 22px; vertical-align: middle; }
+  .btn { @apply inline-flex items-center justify-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-bold transition active:scale-[.98] disabled:opacity-50 disabled:cursor-not-allowed; }
+  .btn-brand { @apply btn bg-brand text-slate-900 hover:bg-brand-dark; }
+  .btn-dark { @apply btn bg-slate-900 text-white hover:bg-slate-800; }
+  .btn-ghost { @apply btn border border-slate-200 bg-white text-slate-700 hover:bg-slate-50; }
+  .btn-danger { @apply btn bg-red-600 text-white hover:bg-red-700; }
+  .kartu { @apply rounded-2xl border border-slate-200 bg-white shadow-sm; }
+  .input { @apply w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:border-brand-dark focus:outline-none focus:ring-2 focus:ring-brand/40; }
+  .label { @apply mb-1 block text-xs font-bold uppercase tracking-wide text-slate-500; }
+  .chip { @apply inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600; }
+  .lencana { @apply absolute -right-1 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white; }
+  .lompat { @apply absolute left-[-9999px] z-50 rounded-b-xl bg-slate-900 px-4 py-2 text-sm font-bold text-white focus:left-2 focus:top-0; }
+}

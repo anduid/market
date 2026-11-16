@@ -1,0 +1,22 @@
+{%- assign p = include.p -%}
+{%- assign kat = site.data.kategori | where: "nama", p.kategori | first -%}
+<article class="kartu relative flex flex-col overflow-hidden" data-produk="{{ p.id }}" data-nama="{{ p.nama | downcase | escape }}" data-kategori="{{ p.kategori | escape }}" data-harga="{{ p.harga }}" data-tgl="{{ p.tgl }}" data-diskon="{{ p.diskon }}">
+  {%- if p.diskon > 0 -%}<span class="absolute left-2 top-2 z-10 rounded-md bg-red-600 px-1.5 py-0.5 text-[11px] font-extrabold text-white">-{{ p.diskon }}%</span>{%- endif -%}
+  <a href="{{ '/produk/' | append: p.slug | append: '/' | relative_url }}" class="block bg-slate-50" aria-label="{{ p.nama | escape }}">
+    {% include gambar.html id=p.gambar_id ukuran=400 alt=p.nama ikon=kat.ikon kelas="aspect-[4/3] w-full object-cover" %}
+  </a>
+  <div class="flex flex-1 flex-col gap-1 p-3">
+    <span class="chip self-start">{{ p.kategori | escape }}</span>
+    <h3 class="line-clamp-2 text-sm font-bold leading-snug"><a href="{{ '/produk/' | append: p.slug | append: '/' | relative_url }}" class="hover:text-brand-deeper">{{ p.nama | escape }}</a></h3>
+    <div class="mt-auto pt-1">
+      {%- if p.harga_coret > 0 -%}<span class="mr-1 text-[11px] text-slate-400 line-through">{% include rupiah.html n=p.harga_coret %}</span>{%- endif -%}
+      <span class="text-base font-extrabold">{% include rupiah.html n=p.harga %}</span>
+    </div>
+    {%- if p.stok < 1 -%}
+    <button type="button" class="btn-ghost mt-1 w-full" disabled>Stok habis</button>
+    {%- else -%}
+    <button type="button" class="btn-brand mt-1 w-full" data-tambah="{{ p.id }}"><span class="ikon" aria-hidden="true">add_shopping_cart</span> {% if p.harga == 0 %}Ambil{% else %}Beli{% endif %}</button>
+    {%- if p.stok <= 5 -%}<p class="text-center text-[11px] font-semibold text-red-600">Tersisa {{ p.stok }} lisensi</p>{%- endif -%}
+    {%- endif -%}
+  </div>
+</article>

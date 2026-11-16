@@ -1,0 +1,11 @@
+# Spanduk beranda (ubah teks dan tautan sesuai promosi)
+- label: "Enterprise GovTech"
+  judul: "SaaS & modul layanan publik siap pakai"
+  teks: "Lisensi jelas, dokumentasi lengkap, dukungan lewat chat."
+  tombol: "Lihat Produk"
+  url: "/produk/?kategori=GovTech%20SaaS"
+- label: "Source Code"
+  judul: "Aplikasi Android & web siap dikembangkan"
+  teks: "Kode bersih, arsitektur rapi, tautan unduhan dirilis setelah pembayaran terverifikasi."
+  tombol: "Jelajahi"
+  url: "/produk/?kategori=Source%20Code"

@@ -1,0 +1,9 @@
+{%- assign n = include.n | plus: 0 -%}
+{%- if n == 0 -%}Gratis{%- else -%}
+{%- assign juta = n | divided_by: 1000000 -%}
+{%- assign ribu = n | modulo: 1000000 | divided_by: 1000 -%}
+{%- assign sisa = n | modulo: 1000 -%}
+{%- assign ribu3 = ribu | prepend: '000' | slice: -3, 3 -%}
+{%- assign sisa3 = sisa | prepend: '000' | slice: -3, 3 -%}
+Rp {% if juta > 0 %}{{ juta }}.{{ ribu3 }}.{{ sisa3 }}{% elsif ribu > 0 %}{{ ribu }}.{{ sisa3 }}{% else %}{{ sisa }}{% endif %}
+{%- endif -%}

@@ -1,0 +1,22 @@
+---
+layout: admin
+title: Masuk Superadmin
+permalink: /superadmin/
+noindex: true
+sitemap: false
+polos: true
+scripts: [admin-login]
+---
+<div class="kartu w-full max-w-sm p-6">
+  <div class="mb-5 flex items-center gap-3">
+    <span class="flex h-11 w-11 items-center justify-center rounded-xl bg-brand text-xl font-extrabold text-slate-900">A</span>
+    <div><h1 class="text-lg font-extrabold">Masuk Superadmin</h1><p class="text-xs text-slate-500">Hanya akun superadmin terdaftar.</p></div>
+  </div>
+  <form id="form-admin" class="grid gap-3" novalidate>
+    <div><label class="label" for="a-user">Username</label><input id="a-user" class="input" autocomplete="username" required></div>
+    <div><label class="label" for="a-pass">Kata sandi</label><input id="a-pass" type="password" class="input" autocomplete="current-password" required></div>
+    <button id="a-btn" class="btn-dark" type="submit">Masuk</button>
+    <p id="a-pesan" class="text-sm font-semibold text-red-600" role="alert"></p>
+  </form>
+  <p class="mt-4 text-center text-xs text-slate-400"><a class="underline" href="{{ '/' | relative_url }}">Kembali ke toko</a></p>
+</div>

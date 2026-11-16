@@ -1,0 +1,23 @@
+<footer class="mt-10 border-t border-slate-200 bg-white pb-24 md:pb-8">
+  <div class="mx-auto grid max-w-5xl gap-6 px-4 py-8 text-sm sm:grid-cols-3">
+    <div>
+      <p class="text-base font-extrabold">ANDU<span class="text-brand-deeper">.my.id</span></p>
+      <p class="mt-1 text-slate-500">{{ site.tagline }}. Dikelola oleh {{ site.publisher }}.</p>
+    </div>
+    <nav aria-label="Tautan marketplace" class="grid gap-1.5">
+      <p class="font-bold">Marketplace</p>
+      <a class="text-slate-600 hover:text-brand-deeper" href="{{ '/produk/' | relative_url }}">Semua produk</a>
+      <a class="text-slate-600 hover:text-brand-deeper" href="{{ '/promo/' | relative_url }}">Promo & gratis</a>
+      <a class="text-slate-600 hover:text-brand-deeper" href="{{ '/bantuan/' | relative_url }}">Pusat bantuan</a>
+      <a class="text-slate-600 hover:text-brand-deeper" href="{{ site.blog_url }}">Blog</a>
+    </nav>
+    <nav aria-label="Informasi" class="grid gap-1.5">
+      <p class="font-bold">Informasi</p>
+      <a class="text-slate-600 hover:text-brand-deeper" href="{{ '/tentang/' | relative_url }}">Tentang</a>
+      <a class="text-slate-600 hover:text-brand-deeper" href="{{ '/faq/' | relative_url }}">FAQ</a>
+      <a class="text-slate-600 hover:text-brand-deeper" href="{{ '/syarat/' | relative_url }}">Syarat & ketentuan</a>
+      <a class="text-slate-600 hover:text-brand-deeper" href="{{ '/privasi/' | relative_url }}">Kebijakan privasi</a>
+    </nav>
+  </div>
+  <p class="border-t border-slate-100 py-4 text-center text-xs text-slate-400">&copy; {{ 'now' | date: '%Y' }} {{ site.publisher }}. Seluruh hak cipta dilindungi.</p>
+</footer>

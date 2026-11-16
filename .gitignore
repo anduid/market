@@ -1,0 +1,9 @@
+_site/
+.jekyll-cache/
+node_modules/
+Gemfile.lock
+package-lock.json
+# Dibuat ulang oleh scripts/ambil_produk.js pada setiap build
+_produk/*.md
+_data/produk.json
+assets/data/produk.json

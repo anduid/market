@@ -1,0 +1,77 @@
+---
+layout: admin
+title: Dashboard Superadmin
+permalink: /superadmin/dashboard/
+noindex: true
+sitemap: false
+guard: true
+scripts: [admin-dashboard]
+---
+<div class="mb-4 flex flex-wrap items-center justify-between gap-2">
+  <h1 class="text-xl font-extrabold">Dashboard</h1>
+  <a class="btn-brand" href="{{ '/superadmin/produk/' | relative_url }}"><span class="ikon" aria-hidden="true">add</span> Tambah produk</a>
+</div>
+
+<section aria-label="Statistik" class="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+  <div class="kartu p-4"><p class="label">Total produk</p><p id="st-produk" class="text-2xl font-extrabold">–</p><p id="st-produk-sub" class="text-xs text-slate-500"></p></div>
+  <div class="kartu p-4"><p class="label">Pesanan menunggu</p><p id="st-menunggu" class="text-2xl font-extrabold">–</p><p id="st-pesanan-sub" class="text-xs text-slate-500"></p></div>
+  <div class="kartu p-4"><p class="label">Pendapatan (lunas)</p><p id="st-pendapatan" class="text-2xl font-extrabold">–</p><p id="st-lunas-sub" class="text-xs text-slate-500"></p></div>
+  <div class="kartu p-4"><p class="label">Pengguna</p><p id="st-pengguna" class="text-2xl font-extrabold">–</p><p id="st-pengguna-sub" class="text-xs text-slate-500"></p></div>
+</section>
+
+<div class="mb-3 flex gap-1 overflow-x-auto rounded-xl bg-white p-1 text-sm font-bold ring-1 ring-slate-200" role="tablist" id="tabs">
+  <button type="button" role="tab" data-tab="produk" class="rounded-lg px-4 py-2">Produk</button>
+  <button type="button" role="tab" data-tab="pesanan" class="rounded-lg px-4 py-2">Pesanan</button>
+  <button type="button" role="tab" data-tab="pengguna" class="rounded-lg px-4 py-2">Pengguna</button>
+</div>
+
+<!-- PRODUK (CRUD dari Todipener) -->
+<section id="tab-produk" class="kartu overflow-hidden">
+  <div class="grid gap-2 border-b border-slate-100 p-3 sm:grid-cols-4">
+    <div class="sm:col-span-2"><label for="f-q" class="sr-only">Cari produk</label><input id="f-q" class="input" placeholder="Cari ID, nama, kategori…" autocomplete="off"></div>
+    <div><label for="f-kat" class="sr-only">Kategori</label><select id="f-kat" class="input"><option value="">Semua kategori</option></select></div>
+    <div class="flex gap-2"><label for="f-status" class="sr-only">Status</label><select id="f-status" class="input"><option value="">Semua status</option><option value="aktif">Aktif</option><option value="nonaktif">Nonaktif</option></select>
+      <button id="f-segar" type="button" class="btn-ghost !px-3" aria-label="Segarkan"><span class="ikon" aria-hidden="true">refresh</span></button></div>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full min-w-[640px] text-left text-sm">
+      <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="p-3">Produk</th><th class="p-3">Kategori</th><th class="p-3">Harga</th><th class="p-3">Stok</th><th class="p-3">Status</th><th class="p-3 text-right">Aksi</th></tr></thead>
+      <tbody id="tb-produk" class="divide-y divide-slate-100"><tr><td class="p-6 text-center text-slate-400" colspan="6">Memuat…</td></tr></tbody>
+    </table>
+  </div>
+  <div class="flex items-center justify-between gap-2 border-t border-slate-100 p-3 text-xs text-slate-500">
+    <span id="pg-info"></span>
+    <span class="flex gap-2"><button id="pg-prev" type="button" class="btn-ghost !py-1.5">Sebelumnya</button><button id="pg-next" type="button" class="btn-ghost !py-1.5">Berikutnya</button></span>
+  </div>
+</section>
+
+<!-- PESANAN -->
+<section id="tab-pesanan" class="kartu hidden overflow-hidden">
+  <div class="grid gap-2 border-b border-slate-100 p-3 sm:grid-cols-3">
+    <div class="sm:col-span-2"><label for="o-q" class="sr-only">Cari pesanan</label><input id="o-q" class="input" placeholder="Cari nomor pesanan atau username…" autocomplete="off"></div>
+    <div><label for="o-status" class="sr-only">Status pesanan</label><select id="o-status" class="input"><option value="">Semua status</option><option value="menunggu">Menunggu</option><option value="lunas">Lunas</option><option value="dibatalkan">Dibatalkan</option></select></div>
+  </div>
+  <div class="overflow-x-auto"><table class="w-full min-w-[640px] text-left text-sm">
+    <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="p-3">Pesanan</th><th class="p-3">Pembeli</th><th class="p-3">Total</th><th class="p-3">Status</th><th class="p-3 text-right">Aksi</th></tr></thead>
+    <tbody id="tb-pesanan" class="divide-y divide-slate-100"></tbody>
+  </table></div>
+</section>
+
+<!-- PENGGUNA -->
+<section id="tab-pengguna" class="kartu hidden overflow-hidden">
+  <div class="border-b border-slate-100 p-3"><label for="u-q" class="sr-only">Cari pengguna</label><input id="u-q" class="input" placeholder="Cari username, nama, email…" autocomplete="off"></div>
+  <div class="overflow-x-auto"><table class="w-full min-w-[640px] text-left text-sm">
+    <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="p-3">Pengguna</th><th class="p-3">Peran</th><th class="p-3">Status</th><th class="p-3">Terakhir masuk</th><th class="p-3 text-right">Aksi</th></tr></thead>
+    <tbody id="tb-pengguna" class="divide-y divide-slate-100"></tbody>
+  </table></div>
+</section>
+
+<!-- Modal konfirmasi -->
+<div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 p-4" role="dialog" aria-modal="true" aria-labelledby="modal-judul">
+  <div class="kartu w-full max-w-sm p-5">
+    <h2 id="modal-judul" class="font-extrabold">Konfirmasi</h2>
+    <p id="modal-isi" class="mt-1 text-sm text-slate-600"></p>
+    <div id="modal-input-wrap" class="mt-3 hidden"><label class="label" for="modal-input" id="modal-input-label">Nilai</label><input id="modal-input" type="password" class="input" autocomplete="new-password"></div>
+    <div class="mt-4 flex justify-end gap-2"><button id="modal-batal" type="button" class="btn-ghost">Batal</button><button id="modal-ok" type="button" class="btn-danger">Lanjutkan</button></div>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+{%- comment -%} Parameter: id (ID file Drive), ukuran (lebar px), alt, ikon (emoji cadangan), kelas {%- endcomment -%}
+{%- if include.id and include.id != "" -%}
+<img src="https://drive.google.com/thumbnail?id={{ include.id }}&amp;sz=w{{ include.ukuran | default: 400 }}" alt="{{ include.alt | escape }}" class="{{ include.kelas }}" loading="{{ include.muat | default: 'lazy' }}" decoding="async" referrerpolicy="no-referrer">
+{%- else -%}
+<span class="flex items-center justify-center {{ include.kelas }}" role="img" aria-label="{{ include.alt | escape }}"><span class="text-5xl">{{ include.ikon | default: '📦' }}</span></span>
+{%- endif -%}

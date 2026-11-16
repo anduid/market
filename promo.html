@@ -1,0 +1,16 @@
+---
+layout: default
+title: Promo & Gratis
+description: Produk digital diskon dan gratis di ANDU.my.id: source code, UI kit, kursus, dan API dengan harga hemat.
+permalink: /promo/
+---
+{%- assign diskon = site.data.produk | where_exp: "p", "p.diskon > 0" -%}
+{%- assign gratis = site.data.produk | where: "harga", 0 -%}
+<h1 class="mb-3 text-xl font-extrabold">Promo hemat 🔥</h1>
+{%- if diskon.size > 0 %}
+<div class="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">{%- for p in diskon %}{% include kartu-produk.html p=p %}{% endfor %}</div>
+{%- else %}<p class="kartu mb-8 p-6 text-center text-slate-500">Belum ada produk diskon saat ini.</p>{%- endif %}
+<h2 class="mb-3 text-xl font-extrabold">Freebies gratis 🎁</h2>
+{%- if gratis.size > 0 %}
+<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">{%- for p in gratis %}{% include kartu-produk.html p=p %}{% endfor %}</div>
+{%- else %}<p class="kartu p-6 text-center text-slate-500">Belum ada produk gratis.</p>{%- endif %}
