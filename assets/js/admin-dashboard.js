@@ -28,7 +28,9 @@
     var r = await Admin.api('getStats'); if (!r.success) return;
     $('st-produk').textContent = r.produk.total; $('st-produk-sub').textContent = r.produk.aktif + ' aktif · ' + r.produk.habis + ' habis · ' + r.produk.kategori + ' kategori';
     $('st-menunggu').textContent = r.pesanan.menunggu; $('st-pesanan-sub').textContent = r.pesanan.total + ' pesanan total';
-    $('st-pendapatan').textContent = A.rupiah(r.pesanan.pendapatan).replace('Gratis', 'Rp 0'); $('st-lunas-sub').textContent = r.pesanan.lunas + ' pesanan lunas';
+    $('st-pendapatan').textContent = A.rupiah(r.pesanan.pendapatan).replace('Gratis', 'Rp 0');
+    $('st-lunas-sub').textContent = r.pesanan.lunas + ' lunas · penjualan ' + A.rupiah(r.pesanan.penjualan || 0).replace('Gratis', 'Rp 0') + ' + kode unik ' + A.rupiah(r.pesanan.kodeUnik || 0).replace('Gratis', 'Rp 0') + (r.pesanan.saldoDipakai ? ' − saldo terpakai ' + A.rupiah(r.pesanan.saldoDipakai) : '');
+    $('st-saldo').textContent = A.rupiah(r.saldoPembeli || 0).replace('Gratis', 'Rp 0'); $('st-saldo-sub').textContent = 'kredit belum terpakai (kewajiban)';
     $('st-pengguna').textContent = r.pengguna.total; $('st-pengguna-sub').textContent = r.pengguna.pembeli + ' pembeli';
   }
 
@@ -122,18 +124,19 @@
   async function muatPengguna() {
     var r = await Admin.api('getUsers', { q: $('u-q').value.trim(), limit: 50 });
     var tb = $('tb-pengguna'), saya = Admin.session().user.username;
-    if (!r.success) { tb.innerHTML = '<tr><td class="p-6 text-center text-red-600" colspan="5">' + A.esc(r.message || 'Gagal memuat.') + '</td></tr>'; return; }
+    if (!r.success) { tb.innerHTML = '<tr><td class="p-6 text-center text-red-600" colspan="6">' + A.esc(r.message || 'Gagal memuat.') + '</td></tr>'; return; }
     tb.innerHTML = r.users.map(function (u) {
       var diri = u.username === saya, d = ' data-user="' + A.esc(u.username) + '"';
       return '<tr><td class="p-3"><p class="font-bold">' + A.esc(u.nama) + '</p><p class="text-xs text-slate-500">@' + A.esc(u.username) + (u.email ? ' · ' + A.esc(u.email) : '') + '</p></td>' +
         '<td class="p-3"><span class="chip">' + A.esc(u.role) + '</span></td>' +
+        '<td class="p-3 font-mono text-xs font-semibold">' + (u.saldo ? A.esc(A.rupiah(u.saldo)) : '<span class="text-slate-400">–</span>') + '</td>' +
         '<td class="p-3"><span class="rounded-full px-2.5 py-1 text-xs font-bold ' + (u.status === 'aktif' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-600') + '">' + A.esc(u.status) + '</span></td>' +
         '<td class="p-3 text-xs text-slate-500">' + A.esc(u.lastLoginAt ? A.tgl(u.lastLoginAt) : '–') + '</td>' +
         '<td class="p-3 text-right">' + (diri ? '<span class="text-xs text-slate-400">Akun Anda</span>' :
           '<button type="button" class="btn-ghost !px-2.5 !py-1.5"' + d + ' data-ua="status" data-nilai="' + (u.status === 'aktif' ? 'nonaktif' : 'aktif') + '">' + (u.status === 'aktif' ? 'Nonaktifkan' : 'Aktifkan') + '</button> ' +
           '<button type="button" class="btn-ghost !px-2.5 !py-1.5"' + d + ' data-ua="role" data-nilai="' + (u.role === 'superadmin' ? 'pembeli' : 'superadmin') + '">' + (u.role === 'superadmin' ? 'Jadikan pembeli' : 'Jadikan superadmin') + '</button> ' +
           '<button type="button" class="btn-ghost !px-2.5 !py-1.5"' + d + ' data-ua="reset">Reset sandi</button>') + '</td></tr>';
-    }).join('') || '<tr><td class="p-8 text-center text-slate-400" colspan="5">Tidak ada pengguna.</td></tr>';
+    }).join('') || '<tr><td class="p-8 text-center text-slate-400" colspan="6">Tidak ada pengguna.</td></tr>';
   }
   $('u-q').addEventListener('input', function () { clearTimeout(uT); uT = setTimeout(muatPengguna, 350); });
   $('tb-pengguna').addEventListener('click', async function (e) {

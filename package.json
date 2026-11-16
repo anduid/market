@@ -5,7 +5,7 @@
     "css": "tailwindcss -c tailwind.config.js -i src/input.css -o assets/css/app.css --minify",
     "produk": "node scripts/ambil_produk.js",
     "produk:contoh": "node scripts/ambil_produk.js --contoh",
-    "uji": "node backend/test/run.js && node backend/test/integrasi.js"
+    "uji": "node backend/test/run.js && node backend/test/integrasi.js && node backend/test/saldo.js && node backend/test/saldo-ui.js"
   },
   "devDependencies": {
     "jsdom": "^26.0.0",

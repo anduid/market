@@ -63,9 +63,9 @@
         '<button id="pc-x" type="button" aria-label="Tutup" style="font-size:20px;color:#94a3b8;cursor:pointer;background:none;border:0">✕</button></div>' +
         '<div style="font:600 11px monospace;color:#64748b;margin:2px 0 10px">' + A.esc(ord.id) + '</div>' + it +
         '<div style="display:flex;justify-content:center;margin:14px 0"><div id="pc-qr" style="background:#fff;padding:8px;border:1px solid #e2e8f0;border-radius:14px;min-width:216px;min-height:216px;display:flex;align-items:center;justify-content:center"></div></div>' +
-        '<div style="background:#f8fafc;border-radius:14px;padding:10px 12px">' + row('Subtotal', rp(ord.total)) + row('Kode unik', '+' + ord.kodeUnik) +
+        '<div style="background:#f8fafc;border-radius:14px;padding:10px 12px">' + row('Subtotal', rp(ord.total)) + (ord.saldoPakai ? row('Saldo terpakai', '-' + rp(ord.saldoPakai)) : '') + row('Kode unik', '+' + ord.kodeUnik) +
         '<div style="border-top:1px solid #e2e8f0;margin-top:6px;padding-top:6px">' + row('Total transfer', rp(ord.totalBayar), true) + '</div></div>' +
-        '<p style="font-size:12px;color:#b45309;margin:10px 0">Bayar <b>persis</b> ' + rp(ord.totalBayar) + ' agar pembayaran mudah dicocokkan. Kedaluwarsa dalam <b id="pc-cd" style="font-family:monospace"></b></p>' +
+        '<p style="font-size:12px;color:#b45309;margin:10px 0">Bayar <b>persis</b> ' + rp(ord.totalBayar) + ' agar pembayaran mudah dicocokkan. Kode unik <b>menjadi saldo Anda</b> setelah pembayaran disetujui dan otomatis memotong pembelian berikutnya. Kedaluwarsa dalam <b id="pc-cd" style="font-family:monospace"></b></p>' +
         '<input id="pc-name" maxlength="80" placeholder="Nama pengirim di mutasi (opsional)" style="width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:12px;font-size:13px;margin-bottom:8px;box-sizing:border-box">' +
         '<div id="pc-err" style="color:#dc2626;font-size:12px;min-height:16px"></div>' +
         btn('pc-done', 'Saya sudah bayar', true) + '<div style="height:8px"></div>' + btn('pc-copy', 'Salin nominal') +

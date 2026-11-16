@@ -40,6 +40,17 @@ scripts: [akun]
       <button id="btn-keluar" type="button" class="btn-ghost text-red-600">Keluar</button>
     </div>
   </section>
+  <section id="kartu-saldo" class="kartu p-5" aria-labelledby="saldo-judul">
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <h2 id="saldo-judul" class="font-extrabold">Saldo kredit</h2>
+        <p class="mt-0.5 text-xs text-slate-500">Kelebihan bayar dari kode unik QRIS disimpan di sini dan otomatis memotong pembelian berikutnya.</p>
+      </div>
+      <p id="saldo-total" class="whitespace-nowrap text-2xl font-extrabold text-emerald-700">Rp 0</p>
+    </div>
+    <ul id="saldo-riwayat" class="mt-3 grid gap-1 border-t border-slate-100 pt-3 text-sm" aria-live="polite"></ul>
+    <a class="btn-brand mt-3 hidden" id="saldo-belanja" href="{{ '/produk/' | relative_url }}">Belanja dengan saldo</a>
+  </section>
   <form id="form-profil" class="kartu grid gap-3 p-5" novalidate>
     <h2 class="font-extrabold">Profil</h2>
     <div><label class="label" for="pr-nama">Nama</label><input id="pr-nama" class="input" maxlength="60"></div>

@@ -12,10 +12,11 @@ scripts: [admin-dashboard]
   <a class="btn-brand" href="{{ '/superadmin/produk/' | relative_url }}"><span class="ikon" aria-hidden="true">add</span> Tambah produk</a>
 </div>
 
-<section aria-label="Statistik" class="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+<section aria-label="Statistik" class="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-5">
   <div class="kartu p-4"><p class="label">Total produk</p><p id="st-produk" class="text-2xl font-extrabold">–</p><p id="st-produk-sub" class="text-xs text-slate-500"></p></div>
   <div class="kartu p-4"><p class="label">Pesanan menunggu</p><p id="st-menunggu" class="text-2xl font-extrabold">–</p><p id="st-pesanan-sub" class="text-xs text-slate-500"></p></div>
-  <div class="kartu p-4"><p class="label">Pendapatan (lunas)</p><p id="st-pendapatan" class="text-2xl font-extrabold">–</p><p id="st-lunas-sub" class="text-xs text-slate-500"></p></div>
+  <div class="kartu p-4"><p class="label">Pendapatan (uang masuk)</p><p id="st-pendapatan" class="text-2xl font-extrabold">–</p><p id="st-lunas-sub" class="text-xs text-slate-500"></p></div>
+  <div class="kartu p-4"><p class="label">Saldo pembeli</p><p id="st-saldo" class="text-2xl font-extrabold">–</p><p id="st-saldo-sub" class="text-xs text-slate-500"></p></div>
   <div class="kartu p-4"><p class="label">Pengguna</p><p id="st-pengguna" class="text-2xl font-extrabold">–</p><p id="st-pengguna-sub" class="text-xs text-slate-500"></p></div>
 </section>
 
@@ -61,7 +62,7 @@ scripts: [admin-dashboard]
 <section id="tab-pengguna" class="kartu hidden overflow-hidden">
   <div class="border-b border-slate-100 p-3"><label for="u-q" class="sr-only">Cari pengguna</label><input id="u-q" class="input" placeholder="Cari username, nama, email…" autocomplete="off"></div>
   <div class="overflow-x-auto"><table class="w-full min-w-[640px] text-left text-sm">
-    <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="p-3">Pengguna</th><th class="p-3">Peran</th><th class="p-3">Status</th><th class="p-3">Terakhir masuk</th><th class="p-3 text-right">Aksi</th></tr></thead>
+    <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="p-3">Pengguna</th><th class="p-3">Peran</th><th class="p-3">Saldo</th><th class="p-3">Status</th><th class="p-3">Terakhir masuk</th><th class="p-3 text-right">Aksi</th></tr></thead>
     <tbody id="tb-pengguna" class="divide-y divide-slate-100"></tbody>
   </table></div>
 </section>

@@ -20,10 +20,13 @@
     } else if (o.status === 'dibatalkan' && o.catatanAdmin) {
       aksi = '<p class="mt-2 text-xs text-slate-500">' + A.esc(o.catatanAdmin) + '</p>';
     }
+    var info = '';
+    if (o.saldoPakai) info += '<p class="mt-1 flex justify-between text-xs text-slate-500"><span>Dibayar dari saldo</span><span class="font-semibold text-emerald-700">-' + A.esc(A.rupiah(o.saldoPakai)) + '</span></p>';
+    if (o.status === 'lunas' && o.kredit) info += '<p class="mt-1 rounded-lg bg-emerald-50 p-2 text-xs text-emerald-800">Kelebihan bayar ' + A.esc(A.rupiah(o.kredit)) + ' (kode unik) sudah masuk saldo akun Anda dan otomatis memotong pembelian berikutnya.</p>';
     return '<article class="kartu p-4"><div class="flex flex-wrap items-center justify-between gap-2"><div><p class="font-extrabold">' + A.esc(o.id) + '</p><p class="text-xs text-slate-500">' + A.esc(A.tgl(o.createdAt)) + '</p></div>' +
       '<span class="rounded-full px-2.5 py-1 text-xs font-bold ' + (BADGE[o.status] || BADGE.dibatalkan) + '">' + A.esc(LABEL[o.status] || o.status) + '</span></div>' +
       '<ul class="mt-3 grid gap-1 border-t border-slate-100 pt-3">' + items + '</ul>' +
-      '<p class="mt-2 flex justify-between border-t border-slate-100 pt-2 text-sm"><span class="text-slate-500">' + ((o.status === 'menunggu' || o.status === 'verifikasi') && o.kodeUnik ? 'Total transfer (kode unik ' + o.kodeUnik + ')' : 'Total') + '</span><span class="font-extrabold">' + A.esc(A.rupiah((o.status === 'menunggu' || o.status === 'verifikasi') && o.totalBayar ? o.totalBayar : o.total).replace('Gratis', 'Rp 0')) + '</span></p>' + aksi + '</article>';
+      '<p class="mt-2 flex justify-between border-t border-slate-100 pt-2 text-sm"><span class="text-slate-500">' + ((o.status === 'menunggu' || o.status === 'verifikasi') && o.kodeUnik ? 'Total transfer (kode unik ' + o.kodeUnik + ')' : 'Total') + '</span><span class="font-extrabold">' + A.esc(A.rupiah((o.status === 'menunggu' || o.status === 'verifikasi') && o.totalBayar ? o.totalBayar : o.total).replace('Gratis', 'Rp 0')) + '</span></p>' + info + aksi + '</article>';
   }
 
   async function muat() {

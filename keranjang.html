@@ -18,6 +18,8 @@ scripts: [bayar, keranjang]
     <h2 class="mb-2 font-extrabold">Ringkasan</h2>
     <div class="flex justify-between text-sm"><span class="text-slate-500">Jumlah produk</span><span id="ringkas-jumlah" class="font-bold">0</span></div>
     <div class="mt-1 flex justify-between"><span class="text-slate-500">Total</span><span id="ringkas-total" class="text-lg font-extrabold">Rp 0</span></div>
+    <label id="saldo-wrap" class="mt-3 hidden cursor-pointer items-start gap-2 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-900"><input id="pakai-saldo" type="checkbox" checked class="mt-0.5"><span>Pakai saldo <strong id="saldo-nominal">Rp 0</strong> untuk memotong pembayaran <span class="block text-xs text-emerald-800/80">Saldo berasal dari kelebihan bayar (kode unik) pembelian sebelumnya.</span></span></label>
+    <div id="ringkas-saldo-baris" class="mt-1 hidden justify-between text-sm"><span class="text-slate-500">Saldo terpakai</span><span id="ringkas-saldo" class="font-bold text-emerald-700"></span></div>
     <label for="catatan" class="label mt-3">Catatan (opsional)</label>
     <input id="catatan" class="input" maxlength="200" placeholder="Mis. nama instansi untuk lisensi">
     <button id="btn-checkout" type="button" class="btn-brand mt-3 w-full">Buat pesanan</button>
