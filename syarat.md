@@ -1,7 +1,7 @@
 ---
 layout: halaman
 title: Syarat & Ketentuan
-description: Syarat dan ketentuan penggunaan marketplace ANDU.my.id: akun, pesanan, pembayaran, lisensi produk digital, dan batasan tanggung jawab.
+description: "Syarat dan ketentuan penggunaan marketplace ANDU.my.id: akun, pesanan, pembayaran, lisensi produk digital, dan batasan tanggung jawab."
 permalink: /syarat/
 ---
 *Terakhir diperbarui: ganti dengan tanggal terbit. Teks ini adalah kerangka umum, mohon ditinjau dan disesuaikan oleh pihak yang berwenang sebelum dipakai.*

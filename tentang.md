@@ -1,7 +1,7 @@
 ---
 layout: halaman
 title: Tentang ANDU.my.id
-description: ANDU.my.id adalah marketplace produk digital Indonesia yang dikelola El-Salam Technology: source code, SaaS, kursus, UI kit, dan API.
+description: "ANDU.my.id adalah marketplace produk digital Indonesia yang dikelola El-Salam Technology: source code, SaaS, kursus, UI kit, dan API."
 permalink: /tentang/
 ---
 **ANDU.my.id** adalah marketplace produk digital yang dikelola oleh **{{ site.publisher }}**. Kami menjual source code, modul SaaS, kursus, UI kit, dan API siap pakai, lengkap dengan lisensi yang jelas dan dukungan teknis lewat chat.

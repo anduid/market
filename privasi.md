@@ -1,7 +1,7 @@
 ---
 layout: halaman
 title: Kebijakan Privasi
-description: Kebijakan privasi ANDU.my.id: data yang dikumpulkan, penyimpanan, penggunaan chat, pihak ketiga, dan hak pengguna.
+description: "Kebijakan privasi ANDU.my.id: data yang dikumpulkan, penyimpanan, penggunaan chat, pihak ketiga, dan hak pengguna."
 permalink: /privasi/
 ---
 *Terakhir diperbarui: ganti dengan tanggal terbit. Teks ini adalah kerangka umum, mohon ditinjau dan disesuaikan (termasuk dengan ketentuan pelindungan data pribadi yang berlaku) sebelum dipakai.*
