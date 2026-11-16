@@ -74,20 +74,23 @@
   });
 
   // ---------- pesanan ----------
-  var oT, BADGE = { menunggu: 'bg-amber-100 text-amber-800', lunas: 'bg-emerald-100 text-emerald-800', dibatalkan: 'bg-slate-200 text-slate-600' };
+  var oT, BADGE = { menunggu: 'bg-amber-100 text-amber-800', verifikasi: 'bg-sky-100 text-sky-800', lunas: 'bg-emerald-100 text-emerald-800', dibatalkan: 'bg-slate-200 text-slate-600' };
+  var daftarPesanan = [], LABEL_ST = { menunggu: 'menunggu bayar', verifikasi: 'perlu diverifikasi', lunas: 'lunas', dibatalkan: 'dibatalkan' };
   async function muatPesanan() {
     var r = await Admin.api('getOrders', { q: $('o-q').value.trim(), status: $('o-status').value, limit: 50 });
     var tb = $('tb-pesanan');
     if (!r.success) { tb.innerHTML = '<tr><td class="p-6 text-center text-red-600" colspan="5">' + A.esc(r.message || 'Gagal memuat.') + '</td></tr>'; return; }
+    daftarPesanan = r.orders;
     tb.innerHTML = r.orders.length ? r.orders.map(function (o) {
       var aksi = '';
-      if (o.status === 'menunggu') aksi += '<button type="button" class="btn-brand !px-2.5 !py-1.5" data-os="lunas" data-id="' + A.esc(o.id) + '">Tandai lunas</button> ';
-      if (o.status !== 'dibatalkan') aksi += '<button type="button" class="btn-ghost !px-2.5 !py-1.5 text-red-600" data-os="dibatalkan" data-id="' + A.esc(o.id) + '">Batalkan</button>';
+      var bukaSt = o.status === 'menunggu' || o.status === 'verifikasi';
+      if (bukaSt || o.status === 'dibatalkan') aksi += '<button type="button" class="btn-brand !px-2.5 !py-1.5" data-os="lunas" data-id="' + A.esc(o.id) + '">' + (o.status === 'dibatalkan' ? 'Setujui (terlambat)' : 'Setujui') + '</button> ';
+      if (o.status !== 'dibatalkan') aksi += '<button type="button" class="btn-ghost !px-2.5 !py-1.5 text-red-600" data-os="dibatalkan" data-id="' + A.esc(o.id) + '">' + (bukaSt ? 'Tolak' : 'Batalkan') + '</button>';
       else aksi += '<button type="button" class="btn-ghost !px-2.5 !py-1.5" data-os="menunggu" data-id="' + A.esc(o.id) + '">Aktifkan lagi</button>';
       return '<tr><td class="p-3"><p class="font-bold">' + A.esc(o.id) + '</p><p class="text-xs text-slate-500">' + A.esc(A.tgl(o.createdAt)) + ' · ' + A.esc(o.items.map(function (i) { return i.nama; }).join(', ')).slice(0, 90) + '</p></td>' +
         '<td class="p-3">@' + A.esc(o.username) + ' <a class="text-xs font-bold text-brand-deeper underline" href="' + A.esc(A.url('/pesan/') + '?to=' + encodeURIComponent(o.username) + '&order=' + encodeURIComponent(o.id)) + '">chat</a></td>' +
-        '<td class="p-3 font-mono font-semibold">' + A.esc(A.rupiah(o.total).replace('Gratis', 'Rp 0')) + '</td>' +
-        '<td class="p-3"><span class="rounded-full px-2.5 py-1 text-xs font-bold ' + (BADGE[o.status] || BADGE.dibatalkan) + '">' + A.esc(o.status) + '</span></td>' +
+        '<td class="p-3 font-mono font-semibold">' + A.esc(A.rupiah(bukaSt && o.totalBayar ? o.totalBayar : o.total).replace('Gratis', 'Rp 0')) + (bukaSt && o.kodeUnik ? '<p class="text-[11px] font-normal text-slate-500">pokok ' + A.esc(A.rupiah(o.total)) + ' + kode ' + A.esc(o.kodeUnik) + '</p>' : '') + (o.pengirim ? '<p class="text-[11px] font-normal text-slate-500">pengirim: ' + A.esc(o.pengirim) + '</p>' : '') + '</td>' +
+        '<td class="p-3"><span class="rounded-full px-2.5 py-1 text-xs font-bold ' + (BADGE[o.status] || BADGE.dibatalkan) + '">' + A.esc(LABEL_ST[o.status] || o.status) + '</span>' + (o.catatanAdmin ? '<p class="mt-1 text-[11px] text-slate-500">' + A.esc(o.catatanAdmin) + '</p>' : '') + '</td>' +
         '<td class="p-3 text-right">' + aksi + '</td></tr>';
     }).join('') : '<tr><td class="p-8 text-center text-slate-400" colspan="5">Belum ada pesanan.</td></tr>';
   }
@@ -96,9 +99,20 @@
   $('tb-pesanan').addEventListener('click', async function (e) {
     var b = e.target.closest('[data-os]'); if (!b) return;
     var st = b.getAttribute('data-os'), id = b.getAttribute('data-id');
-    var ya = await konfirmasi('Ubah status pesanan?', id + ' → ' + st + (st === 'lunas' ? '. Stok berkurang dan pembeli mendapat tautan unduhan.' : ''), { tombol: 'Ya, ubah', aman: st !== 'dibatalkan' });
-    if (!ya) return;
-    var r = await Admin.api('updateOrderStatus', { id: id, status: st });
+    var o = daftarPesanan.filter(function (x) { return x.id === id; })[0] || {};
+    var body = { id: id, status: st };
+    if (st === 'lunas') {
+      var nominal = A.rupiah(o.totalBayar || o.total).replace('Gratis', 'Rp 0');
+      var ya = await konfirmasi('Setujui pembayaran?', id + ': pastikan dana ' + nominal + (o.kodeUnik ? ' (kode unik ' + o.kodeUnik + ')' : '') + ' sudah masuk di mutasi. Stok berkurang dan pembeli mendapat tautan unduhan.', { tombol: 'Ya, setujui', aman: true });
+      if (!ya) return;
+      body.diterima = o.totalBayar || o.total;
+    } else if (st === 'dibatalkan') {
+      var alasan = prompt('Alasan (dikirim ke pembeli lewat chat):', 'Pembayaran tidak ditemukan di mutasi'); if (alasan === null) return;
+      body.alasan = alasan;
+    } else {
+      var ok = await konfirmasi('Ubah status pesanan?', id + ' → ' + st, { tombol: 'Ya, ubah', aman: true }); if (!ok) return;
+    }
+    var r = await Admin.api('updateOrderStatus', body);
     A.toast(r.success ? 'Status diperbarui' : (r.message || 'Gagal'), 4500);
     if (r.success) { muatPesanan(); muatStat(); muatProduk(); }
   });

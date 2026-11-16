@@ -49,7 +49,7 @@ scripts: [admin-dashboard]
 <section id="tab-pesanan" class="kartu hidden overflow-hidden">
   <div class="grid gap-2 border-b border-slate-100 p-3 sm:grid-cols-3">
     <div class="sm:col-span-2"><label for="o-q" class="sr-only">Cari pesanan</label><input id="o-q" class="input" placeholder="Cari nomor pesanan atau username…" autocomplete="off"></div>
-    <div><label for="o-status" class="sr-only">Status pesanan</label><select id="o-status" class="input"><option value="">Semua status</option><option value="menunggu">Menunggu</option><option value="lunas">Lunas</option><option value="dibatalkan">Dibatalkan</option></select></div>
+    <div><label for="o-status" class="sr-only">Status pesanan</label><select id="o-status" class="input"><option value="">Semua status</option><option value="verifikasi">Perlu diverifikasi</option><option value="menunggu">Menunggu bayar</option><option value="lunas">Lunas</option><option value="dibatalkan">Dibatalkan</option></select></div>
   </div>
   <div class="overflow-x-auto"><table class="w-full min-w-[640px] text-left text-sm">
     <thead class="bg-slate-50 text-xs uppercase tracking-wide text-slate-500"><tr><th class="p-3">Pesanan</th><th class="p-3">Pembeli</th><th class="p-3">Total</th><th class="p-3">Status</th><th class="p-3 text-right">Aksi</th></tr></thead>
