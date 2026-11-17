@@ -1,5 +1,5 @@
 /* Tema "Royal Play" untuk beranda marketplace: biru royal, tombol amber 3D, font Fredoka + Plus Jakarta Sans.
-   Berlaku hanya bila <body> memiliki kelas .tema-royal (lihat _layouts/default.html).
+   Berlaku bila <body> memiliki kelas .tema-royal (default.html dan admin.html, jadi seluruh halaman market).
    Tidak perlu build Tailwind: berkas ini dimuat setelah app.css dan menimpa utilitas yang sudah ada. */
 
 .tema-royal {
@@ -20,6 +20,7 @@
 }
 .tema-royal ::selection { background: var(--amber); color: var(--royal-950); }
 .tema-royal :focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.tema-royal .kartu :focus-visible { outline-color: var(--royal-600); }
 
 /* Tipografi */
 .tema-royal h1, .tema-royal h2, .tema-royal h3, .tema-royal h4 { font-family: var(--font-display); letter-spacing: -.01em; }
@@ -120,3 +121,75 @@
 @media (prefers-reduced-motion: reduce) {
   .tema-royal *, .tema-royal *::before, .tema-royal *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+/* ===== Halaman lain: produk, promo, keranjang, akun, pesan, pesanan, halaman teks, superadmin ===== */
+
+/* Teks langsung di atas latar biru (di luar kartu) dibuat terang; di dalam kartu dikembalikan gelap */
+.tema-royal .text-slate-400 { color: var(--royal-300); }
+.tema-royal .text-slate-500 { color: var(--royal-200); }
+.tema-royal .text-slate-600, .tema-royal .text-slate-700 { color: var(--royal-100); }
+.tema-royal .hover\:text-brand-deeper:hover { color: var(--amber); }
+.tema-royal .kartu .text-slate-400 { color: #7C90C4; }
+.tema-royal .kartu .text-slate-500 { color: #4A5F96; }
+.tema-royal .kartu .text-slate-600, .tema-royal .kartu .text-slate-700 { color: var(--royal-800); }
+.tema-royal .kartu .text-slate-900 { color: var(--royal-950); }
+.tema-royal .kartu .text-brand, .tema-royal .kartu .text-brand-deeper { color: var(--royal-600); }
+.tema-royal .kartu .text-brand.bg-slate-900 { color: var(--amber); }
+.tema-royal .kartu .hover\:text-brand-deeper:hover { color: var(--royal-600); }
+.tema-royal .kartu .border-slate-100, .tema-royal .kartu .divide-slate-100 > * + * { border-color: #E3ECFF; }
+.tema-royal .kartu .border-slate-200 { border-color: var(--royal-200); }
+.tema-royal .kartu .bg-slate-100 { background-color: #E3ECFF; }
+.tema-royal .kartu .bg-slate-50 { background-color: var(--royal-50); }
+.tema-royal .kartu .hover\:bg-slate-50:hover, .tema-royal .kartu .hover\:bg-slate-100:hover { background-color: #E3ECFF; }
+.tema-royal .kartu .bg-slate-200 { background-color: var(--royal-200); }
+.tema-royal .kartu .bg-white { background-color: #fff; }
+.tema-royal .btn-ghost.text-red-600 { color: #DC2626; }
+.tema-royal .btn-ghost[disabled] { color: #7C90C4; }
+
+/* Isian formulir */
+.tema-royal .input { border-color: var(--royal-200); border-radius: 1rem; color: var(--royal-950); }
+.tema-royal .input:focus { border-color: var(--royal-600); box-shadow: 0 0 0 3px rgba(42,102,246,.25); }
+.tema-royal .input::placeholder { color: #7C90C4; }
+.tema-royal .label { color: var(--royal-700); }
+.tema-royal header .input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(255,184,0,.28); }
+
+/* Halaman teks (bantuan, faq, tentang, syarat, privasi) */
+.tema-royal .isi-teks { color: var(--royal-800); }
+.tema-royal .isi-teks a { color: var(--royal-600); }
+.tema-royal .isi-teks a:hover { color: var(--royal-800); }
+.tema-royal .isi-teks h2 { color: var(--royal-950); font-family: var(--font-display); font-size: 1.3rem; }
+.tema-royal .isi-teks details { background: var(--royal-50); }
+.tema-royal .isi-teks summary { color: var(--royal-950); }
+.tema-royal article.kartu > h1 { font-size: 1.9rem; color: var(--royal-950); }
+
+/* Detail produk */
+.tema-royal #detail-produk h1 { color: var(--royal-950); font-family: var(--font-display); }
+.tema-royal #harga-produk { color: var(--royal-700); font-family: var(--font-display); }
+
+/* Judul halaman di atas latar biru */
+.tema-royal main > h1, .tema-royal main > div > h1, .tema-royal main > div > div > h1 { color: #fff; font-size: 1.7rem; }
+.tema-royal .kartu h1 { color: var(--royal-950); }
+.tema-royal main h2.text-xl { font-size: 1.5rem; color: #fff; }
+
+/* Chat */
+.tema-royal #chat-app .bg-brand { background: var(--amber); color: var(--royal-950); }
+
+/* Modal */
+.tema-royal .bg-slate-900\/60 { background-color: rgba(9,26,75,.68); backdrop-filter: blur(4px); }
+
+/* Superadmin: sidebar, header ponsel, tab */
+.tema-royal aside.bg-slate-900 { background: rgba(9,26,75,.78); color: var(--royal-100); border-right: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.tema-royal aside .border-slate-800 { border-color: rgba(255,255,255,.14); }
+.tema-royal aside nav a { border-radius: 9999px; font-family: var(--font-display); font-weight: 600; transition: background .15s, color .15s; }
+.tema-royal aside nav a:hover { background: rgba(255,255,255,.15); color: #fff; }
+.tema-royal aside nav a.bg-slate-800 { background: linear-gradient(180deg, #FCD34D, #FFB800); color: var(--royal-950); box-shadow: 0 3px 0 var(--amber-deep); }
+.tema-royal aside .hover\:text-white:hover { color: var(--amber); }
+.tema-royal aside .uppercase { text-transform: none; letter-spacing: .02em; color: var(--royal-300); }
+.tema-royal aside .font-extrabold.text-white { font-family: var(--font-display); font-size: 1.15rem; }
+.tema-royal header.sticky .text-brand-deeper { color: var(--amber); }
+.tema-royal #tabs { background: rgba(255,255,255,.14); box-shadow: inset 0 1px 2px rgba(255,255,255,.3), 0 0 0 1px rgba(255,255,255,.22); border-radius: 9999px; }
+.tema-royal #tabs button { border-radius: 9999px; font-family: var(--font-display); color: var(--royal-100); }
+.tema-royal #tabs .hover\:bg-slate-100:hover { background: rgba(255,255,255,.16); }
+.tema-royal #tabs .bg-slate-900 { background: linear-gradient(180deg, #FCD34D, #FFB800); color: var(--royal-950); box-shadow: 0 3px 0 var(--amber-deep); }
+.tema-royal table thead { background: var(--royal-50); }
+.tema-royal main .kartu h2, .tema-royal main .kartu h2.text-lg, .tema-royal main .kartu h2.text-xl { color: var(--royal-950); font-size: 1.2rem; }
