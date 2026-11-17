@@ -1,7 +1,7 @@
 <footer class="mt-10 border-t border-slate-200 bg-white pb-24 md:pb-8">
-  <div class="mx-auto grid max-w-5xl gap-6 px-4 py-8 text-sm sm:grid-cols-3">
+  <div class="mx-auto grid max-w-5xl gap-6 px-4 py-8 text-sm sm:grid-cols-2 lg:grid-cols-4">
     <div>
-      <p class="text-base font-extrabold">ANDU<span class="text-brand-deeper">.my.id</span></p>
+      <a href="{{ site.studio_url }}" class="flex items-center gap-2" aria-label="andu.my.id, ke situs utama"><img src="{{ '/assets/images/icon-192.png' | relative_url }}" width="32" height="32" alt="" class="h-8 w-8 rounded-lg" loading="lazy"><span class="text-base font-extrabold">andu<span class="text-blue-600">.my.id</span></span></a>
       <p class="mt-1 text-slate-500">{{ site.tagline }}. Dikelola oleh {{ site.publisher }}.</p>
     </div>
     <nav aria-label="Tautan marketplace" class="grid gap-1.5">
@@ -10,6 +10,12 @@
       <a class="text-slate-600 hover:text-brand-deeper" href="{{ '/promo/' | relative_url }}">Promo & gratis</a>
       <a class="text-slate-600 hover:text-brand-deeper" href="{{ '/bantuan/' | relative_url }}">Pusat bantuan</a>
       <a class="text-slate-600 hover:text-brand-deeper" href="{{ site.blog_url }}">Blog</a>
+    </nav>
+    <nav aria-label="Ekosistem andu.my.id" class="grid gap-1.5">
+      <p class="font-bold">Ekosistem andu.my.id</p>
+      {%- for e in site.ekosistem %}
+      <a class="text-slate-600 hover:text-brand-deeper" href="{{ e.url }}">{{ e.nama }}</a>
+      {%- endfor %}
     </nav>
     <nav aria-label="Informasi" class="grid gap-1.5">
       <p class="font-bold">Informasi</p>

@@ -1,8 +1,17 @@
+{%- comment -%} Bilah ekosistem andu.my.id: tautan ke seluruh bagian situs, bergulir ke samping di ponsel. {%- endcomment -%}
+<div class="bg-slate-900 text-slate-300">
+  <nav class="mx-auto flex max-w-5xl items-center gap-1 overflow-x-auto px-3 py-1.5 text-xs font-semibold sm:px-4" style="scrollbar-width:none" aria-label="Ekosistem andu.my.id">
+    <span class="mr-1 shrink-0 font-extrabold text-white">andu<span class="text-brand">.my.id</span></span>
+    {%- for e in site.ekosistem %}
+    <a href="{{ e.url }}" class="shrink-0 rounded-full px-2.5 py-1 {% if e.aktif %}bg-brand text-slate-900{% else %}hover:bg-slate-800{% endif %}"{% if e.aktif %} aria-current="page"{% endif %}>{{ e.nama }}</a>
+    {%- endfor %}
+  </nav>
+</div>
 <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
   <div class="mx-auto flex max-w-5xl items-center gap-2 px-3 py-2.5 sm:gap-4 sm:px-4">
-    <a href="{{ '/' | relative_url }}" class="flex shrink-0 items-center gap-2" aria-label="ANDU.my.id, ke beranda">
-      <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-lg font-extrabold text-slate-900">A</span>
-      <span class="hidden text-base font-extrabold sm:inline">ANDU<span class="text-brand-deeper">.my.id</span></span>
+    <a href="{{ '/' | relative_url }}" class="flex shrink-0 items-center gap-2" aria-label="andu.my.id Market, ke beranda marketplace">
+      <img src="{{ '/assets/images/icon-192.png' | relative_url }}" width="36" height="36" alt="" class="h-9 w-9 rounded-xl">
+      <span class="hidden text-base font-extrabold sm:inline">andu<span class="text-blue-600">.my.id</span> <span class="ml-0.5 rounded-md bg-brand-light px-1.5 py-0.5 align-middle text-[11px] font-extrabold uppercase text-brand-deeper">Market</span></span>
     </a>
     <form action="{{ '/produk/' | relative_url }}" method="get" role="search" class="relative min-w-0 flex-1">
       <label for="cari-global" class="sr-only">Cari produk</label>

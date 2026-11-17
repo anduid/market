@@ -1,0 +1,20 @@
+---
+layout: null
+permalink: /site.webmanifest
+sitemap: false
+---
+{
+  "name": "andu.my.id Market",
+  "short_name": "Market",
+  "description": {{ site.description | jsonify }},
+  "lang": "{{ site.lang }}",
+  "start_url": {{ '/' | relative_url | jsonify }},
+  "scope": {{ '/' | relative_url | jsonify }},
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2f6df6",
+  "icons": [
+    { "src": {{ '/assets/images/icon-192.png' | relative_url | jsonify }}, "sizes": "192x192", "type": "image/png" },
+    { "src": {{ '/assets/images/icon-512.png' | relative_url | jsonify }}, "sizes": "512x512", "type": "image/png" }
+  ]
+}

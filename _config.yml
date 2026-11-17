@@ -17,6 +17,16 @@ api_url: "https://script.google.com/macros/s/AKfycbx2-5gdwYqd_34LXEw-xAuqcA4sxA8
 support_username: andu            # akun superadmin yang menerima chat dukungan
 blog_url: "https://andu.my.id/blog/"
 studio_url: "https://andu.my.id/"
+
+# Ekosistem andu.my.id: dipakai bilah atas, header, dan footer supaya marketplace terasa satu kesatuan dengan situs utama.
+# aktif: true menandai halaman tempat pengunjung sedang berada.
+ekosistem:
+  - { nama: Studio, url: "https://andu.my.id/", ikon: home }
+  - { nama: Pesaner, url: "https://andu.my.id/pesaner", ikon: edit_note }
+  - { nama: Market, url: "https://andu.my.id/market/", ikon: storefront, aktif: true }
+  - { nama: Portal, url: "https://andu.my.id/portal/", ikon: apps }
+  - { nama: Blog, url: "https://andu.my.id/blog/", ikon: article }
+  - { nama: Profil, url: "https://andu.my.id/profil/", ikon: person }
 kontak_email: "elsalamtechnology@gmail.com"
 default_image: /assets/images/og-default.png
 
