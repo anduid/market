@@ -1,0 +1,122 @@
+/* Tema "Royal Play" untuk beranda marketplace: biru royal, tombol amber 3D, font Fredoka + Plus Jakarta Sans.
+   Berlaku hanya bila <body> memiliki kelas .tema-royal (lihat _layouts/default.html).
+   Tidak perlu build Tailwind: berkas ini dimuat setelah app.css dan menimpa utilitas yang sudah ada. */
+
+.tema-royal {
+  --royal-50: #EEF4FF; --royal-100: #D9E6FF; --royal-200: #BCD3FF; --royal-300: #8EB6FF;
+  --royal-600: #1D5CE5; --royal-700: #1546BE; --royal-800: #143BA2; --royal-900: #0F2C7A; --royal-950: #091A4B;
+  --amber: #FFB800; --amber-deep: #D99500;
+  --font-display: 'Fredoka', ui-rounded, 'Plus Jakarta Sans', sans-serif;
+  color: #fff;
+  background-color: #174fd0;
+  background-image:
+    radial-gradient(rgba(255,255,255,.12) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 18% 8%, rgba(255,255,255,.16) 0%, transparent 38%),
+    radial-gradient(circle at 88% 28%, rgba(96,165,250,.25) 0%, transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(30,58,138,.7) 0%, transparent 60%),
+    linear-gradient(180deg, #1f64f2 0%, #1546be 50%, #0c2d82 100%);
+  background-size: 32px 32px, auto, auto, auto, auto;
+  background-attachment: fixed;
+}
+.tema-royal ::selection { background: var(--amber); color: var(--royal-950); }
+.tema-royal :focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+/* Tipografi */
+.tema-royal h1, .tema-royal h2, .tema-royal h3, .tema-royal h4 { font-family: var(--font-display); letter-spacing: -.01em; }
+.tema-royal .btn { font-family: var(--font-display); font-weight: 700; border-radius: 9999px; }
+
+/* Warna merek: hijau lama -> amber */
+.tema-royal .bg-brand { background-color: var(--amber); color: var(--royal-950); }
+.tema-royal .text-brand, .tema-royal .text-brand-deeper { color: var(--amber); }
+.tema-royal .kartu .hover\:text-brand-deeper:hover { color: var(--royal-600); }
+
+/* Tombol */
+.tema-royal .btn-brand {
+  background: linear-gradient(180deg, #FCD34D 0%, #FFB800 55%, #EAB308 100%);
+  color: var(--royal-950);
+  box-shadow: 0 5px 0 var(--amber-deep), 0 10px 18px rgba(255,184,0,.35);
+  transition: transform .15s, box-shadow .15s, filter .15s;
+}
+.tema-royal .btn-brand:hover { filter: brightness(1.07); transform: translateY(-2px); box-shadow: 0 7px 0 var(--amber-deep), 0 14px 22px rgba(255,184,0,.42); }
+.tema-royal .btn-brand:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--amber-deep), 0 3px 8px rgba(255,184,0,.3); }
+.tema-royal .btn-dark { background: var(--royal-900); color: #fff; }
+.tema-royal .btn-dark:hover { background: var(--royal-800); }
+.tema-royal .btn-ghost { background: #fff; color: var(--royal-800); border-color: var(--royal-200); }
+.tema-royal .btn-ghost:hover { background: var(--royal-50); }
+
+/* Bilah ekosistem + header */
+.tema-royal > .bg-slate-900 { background: rgba(9,26,75,.72); color: var(--royal-100); }
+.tema-royal > .bg-slate-900 a:not(.bg-brand):hover { background: rgba(255,255,255,.14); color: #fff; }
+.tema-royal header.sticky { background: rgba(19,64,175,.78); border-bottom: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); color: #fff; }
+.tema-royal header .text-blue-600 { color: var(--amber); }
+.tema-royal header .bg-brand-light { background: rgba(255,255,255,.2); color: #fff; }
+.tema-royal header .text-base { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; }
+.tema-royal header .input { background: rgba(255,255,255,.12) !important; border-color: rgba(255,255,255,.28); color: #fff; }
+.tema-royal header .input::placeholder { color: var(--royal-200); }
+.tema-royal header .input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(255,184,0,.28); }
+.tema-royal header .text-slate-400 { color: var(--royal-200); }
+.tema-royal header .btn-ghost { background: transparent; color: #fff; }
+.tema-royal header .btn-ghost:hover, .tema-royal header a.rounded-full:hover { background: rgba(255,255,255,.16); }
+.tema-royal header .lencana { background: var(--amber); color: var(--royal-950); }
+
+/* Banner promo */
+.tema-royal section[aria-label="Promo utama"] > div > a {
+  background: linear-gradient(135deg, rgba(255,255,255,.18) 0%, rgba(255,255,255,.06) 100%);
+  border: 1px solid rgba(255,255,255,.24);
+  box-shadow: 0 20px 40px -18px rgba(5,23,77,.6), inset 0 1px 2px rgba(255,255,255,.35);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.tema-royal section[aria-label="Promo utama"] h2 { font-size: 1.6rem; line-height: 1.1; }
+.tema-royal section[aria-label="Promo utama"] .text-slate-300 { color: var(--royal-100); }
+.tema-royal section[aria-label="Promo utama"] .bg-brand { border-radius: 9999px; padding: .15rem .65rem; text-transform: none; font-family: var(--font-display); font-size: 12px; }
+
+/* Kategori */
+.tema-royal #judul-kategori + ul a {
+  background: linear-gradient(135deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.06) 100%);
+  color: #fff; border-radius: 1.25rem;
+  box-shadow: inset 0 1px 2px rgba(255,255,255,.3), 0 10px 20px -12px rgba(5,23,77,.6), 0 0 0 1px rgba(255,255,255,.2);
+  transition: transform .2s, box-shadow .2s;
+}
+.tema-royal #judul-kategori + ul a:hover { transform: translateY(-3px); box-shadow: inset 0 1px 2px rgba(255,255,255,.4), 0 14px 24px -12px rgba(5,23,77,.7), 0 0 0 2px var(--amber); }
+
+/* Judul seksi */
+.tema-royal main h2.text-lg { font-size: 1.5rem; color: #fff; }
+.tema-royal main a.text-brand-deeper { font-family: var(--font-display); font-weight: 600; }
+.tema-royal main a.text-brand-deeper:hover { text-decoration: underline; }
+
+/* Kartu (produk, blok kreator): permukaan terang bergaya clay agar teks gelap tetap terbaca */
+.tema-royal .kartu {
+  background: linear-gradient(160deg, #ffffff 0%, #EEF4FF 100%);
+  border: 1px solid #fff; color: var(--royal-900);
+  box-shadow: 0 20px 36px -16px rgba(5,23,77,.55), inset 0 1px 2px rgba(255,255,255,.9);
+  border-radius: 1.5rem;
+}
+.tema-royal article.kartu { transition: transform .2s, box-shadow .2s; }
+.tema-royal article.kartu:hover { transform: translateY(-4px); box-shadow: 0 26px 44px -16px rgba(5,23,77,.65), inset 0 1px 2px #fff; }
+.tema-royal .kartu .bg-slate-50 { background: var(--royal-50); }
+.tema-royal .kartu .chip { background: var(--royal-100); color: var(--royal-800); }
+.tema-royal .kartu h3 { font-size: .95rem; }
+.tema-royal .kartu .text-base.font-extrabold { font-family: var(--font-display); font-size: 1.15rem; color: var(--royal-700); }
+.tema-royal .kartu .text-slate-500 { color: #4A5F96; }
+.tema-royal .kartu .bg-slate-900 { background: var(--royal-950); color: var(--amber); }
+
+/* Footer */
+.tema-royal footer { background: rgba(9,26,75,.62); border-top: 1px solid rgba(255,255,255,.16); color: var(--royal-100); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.tema-royal footer .text-blue-600 { color: var(--amber); }
+.tema-royal footer .font-bold, .tema-royal footer .font-extrabold { color: #fff; font-family: var(--font-display); }
+.tema-royal footer .text-slate-500, .tema-royal footer .text-slate-600 { color: var(--royal-200); }
+.tema-royal footer a.text-slate-600:hover { color: var(--amber); }
+.tema-royal footer .border-slate-100 { border-color: rgba(255,255,255,.14); }
+.tema-royal footer .text-slate-400 { color: var(--royal-300); }
+
+/* Navigasi bawah (ponsel) */
+.tema-royal nav[aria-label="Navigasi bawah"] { background: rgba(15,44,122,.92); border-top: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.tema-royal nav[aria-label="Navigasi bawah"] ul { color: var(--royal-200); }
+.tema-royal nav[aria-label="Navigasi bawah"] a:hover { color: #fff; }
+
+/* Toast */
+.tema-royal #toast { background: var(--royal-950); border: 1px solid rgba(255,255,255,.2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tema-royal *, .tema-royal *::before, .tema-royal *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}

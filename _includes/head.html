@@ -21,7 +21,7 @@
 <meta name="description" content="{{ deskripsi | escape }}">
 <link rel="canonical" href="{{ kanonik }}">
 {% if page.noindex %}<meta name="robots" content="noindex, nofollow">{% else %}<meta name="robots" content="index, follow, max-image-preview:large">{% endif %}
-<meta name="theme-color" content="#2f6df6">
+<meta name="theme-color" content="#174fd0">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="icon" href="{{ '/assets/images/favicon.svg' | relative_url }}" type="image/svg+xml">
 <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}" sizes="any">
@@ -41,9 +41,10 @@
 <meta name="twitter:image" content="{{ gambar }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap">
 <link rel="stylesheet" href="{{ '/assets/css/app.css' | relative_url }}">
+{% if page.url == '/' %}<link rel="stylesheet" href="{{ '/assets/css/tema-royal.css' | relative_url }}">{% endif %}
 <script>window.ANDU = { api: {{ site.api_url | jsonify }}, base: {{ site.baseurl | jsonify }}, support: {{ site.support_username | jsonify }} };</script>
 {% if page.layout == 'produk' %}
 <script type="application/ld+json">

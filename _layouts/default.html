@@ -3,7 +3,7 @@
 <head>
   {% include head.html %}
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen{% if page.url == '/' %} tema-royal{% endif %}">
   <a class="lompat" href="#isi">Lompat ke konten</a>
   {% include header.html %}
   <main id="isi" class="mx-auto w-full {% if page.lebar == 'penuh' %}max-w-6xl{% else %}max-w-5xl{% endif %} px-3 pb-24 pt-4 sm:px-4 md:pb-8">
