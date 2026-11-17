@@ -36,6 +36,13 @@ jobs:
           GAS_URL: ${{ secrets.GAS_URL }}
         run: node scripts/ambil_produk.js
 
+      - name: Periksa data produk sebelum Jekyll
+        run: |
+          echo "--- _data"; ls -la _data
+          echo "--- assets/data"; ls -la assets/data
+          echo "--- _produk"; ls _produk
+          test -s _data/produk.json || { echo "GALAT: _data/produk.json kosong/tidak ada"; exit 1; }
+
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"
@@ -45,6 +52,14 @@ jobs:
         env:
           JEKYLL_ENV: production
         run: bundle exec jekyll build
+
+      - name: Periksa hasil build memuat produk
+        run: |
+          echo "--- _site/assets/data"; ls -la _site/assets/data || true
+          test -s _site/assets/data/produk.json || { echo "GALAT: produk.json tidak ada di _site"; exit 1; }
+          echo "Isi produk.json (200 karakter pertama):"; head -c 200 _site/assets/data/produk.json; echo
+          echo "--- halaman produk di _site/produk"; ls _site/produk | head -20
+          grep -c 'data-produk=' _site/index.html || true
 
       - uses: actions/upload-pages-artifact@v3
 
