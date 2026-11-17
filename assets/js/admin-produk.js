@@ -64,7 +64,7 @@
       v.gambarId = S.gambarId; if (id) v.id = id;
       var r = await Admin.api(id ? 'updateProduct' : 'addProduct', { product: v });
       if (!r.success) { pesan(r.message || 'Gagal menyimpan.'); return; }
-      location.href = A.url('/superadmin/dashboard/') + '?pesan=' + encodeURIComponent(id ? 'Produk diperbarui' : 'Produk ditambahkan');
+      location.href = A.url('/superadmin/dashboard/') + '?pesan=' + encodeURIComponent((id ? 'Produk diperbarui' : 'Produk ditambahkan') + Admin.catatanBuild(r));
     } catch (ex) { pesan('Tidak dapat terhubung ke server.'); }
     finally { btn.disabled = false; btn.textContent = asal; }
   });
@@ -72,7 +72,7 @@
   $('btn-hapus').addEventListener('click', async function () {
     if (!id || !confirm('Hapus produk ini secara permanen?')) return;
     var r = await Admin.api('deleteProduct', { id: id });
-    if (r.success) location.href = A.url('/superadmin/dashboard/') + '?pesan=' + encodeURIComponent('Produk dihapus');
+    if (r.success) location.href = A.url('/superadmin/dashboard/') + '?pesan=' + encodeURIComponent('Produk dihapus' + Admin.catatanBuild(r));
     else pesan(r.message || 'Gagal menghapus.');
   });
 

@@ -71,7 +71,7 @@
     var ya = await konfirmasi('Hapus produk?', '"' + b.getAttribute('data-nama') + '" akan dihapus permanen.', { tombol: 'Hapus' });
     if (!ya) return;
     var r = await Admin.api('deleteProduct', { id: b.getAttribute('data-hapus') });
-    A.toast(r.success ? 'Produk dihapus' : (r.message || 'Gagal menghapus'), 4500);
+    A.toast(r.success ? 'Produk dihapus' + Admin.catatanBuild(r) : (r.message || 'Gagal menghapus'), r.success ? 6000 : 4500);
     if (r.success) { muatProduk(); muatStat(); }
   });
 
@@ -115,7 +115,7 @@
       var ok = await konfirmasi('Ubah status pesanan?', id + ' → ' + st, { tombol: 'Ya, ubah', aman: true }); if (!ok) return;
     }
     var r = await Admin.api('updateOrderStatus', body);
-    A.toast(r.success ? 'Status diperbarui' : (r.message || 'Gagal'), 4500);
+    A.toast(r.success ? 'Status diperbarui' + Admin.catatanBuild(r) : (r.message || 'Gagal'), r.success ? 6000 : 4500);
     if (r.success) { muatPesanan(); muatStat(); muatProduk(); }
   });
 

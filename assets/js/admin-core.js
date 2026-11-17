@@ -11,6 +11,13 @@
   Admin.api = function (action, params) {
     return A.api(action, params, { session: Admin.session(), onExpired: function () { A.toast('Sesi berakhir. Silakan masuk lagi.'); setTimeout(Admin.keluar, 800); } });
   };
+  // Keterangan pembaruan etalase dari backend (field buildTriggered pada respons).
+  // undefined = tidak ada build terpicu (atau backend lama) -> tanpa keterangan.
+  Admin.catatanBuild = function (r) {
+    if (r && r.buildTriggered === true) return '. Situs diperbarui dalam ±1 menit';
+    if (r && r.buildTriggered === false) return '. Pembaruan situs belum terpicu, cek GH_TOKEN';
+    return '';
+  };
   Admin.guard = function () {
     var s = Admin.session();
     if (!s || !s.user || s.user.role !== 'superadmin') { Admin.keluar(); return false; }
@@ -25,6 +32,6 @@
       if (k) k.addEventListener('click', async function () { try { await Admin.api('logout', {}); } catch (e) {} Admin.keluar(); });
     }
     var p = new URLSearchParams(location.search).get('pesan');
-    if (p) { A.toast(p); var u = new URL(location.href); u.searchParams.delete('pesan'); history.replaceState(null, '', u.pathname + u.search); }
+    if (p) { A.toast(p, 6000); var u = new URL(location.href); u.searchParams.delete('pesan'); history.replaceState(null, '', u.pathname + u.search); }
   });
 })();
